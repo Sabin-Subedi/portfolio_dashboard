@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useReducer } from "react";
 import { createContext } from "react";
 import { LOGIN_USER } from "./actions";
 
@@ -7,7 +7,7 @@ const initialValues = {
   isLoggedIn: null,
 };
 
-const AppContext = createContext();
+export const AppContext = createContext();
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -22,13 +22,16 @@ const reducer = (state, action) => {
 };
 
 export const AppContextProvider = ({ children }) => {
-  const reducerValue = useReducer(reducer, initialValues);
   return (
-    <AppContext.Provider value={reducerValue}>children</AppContext.Provider>
+    <AppContext.Provider value={useReducer(reducer, initialValues)}>
+      {/* <AppContext.Consumer>
+        {(value) => {
+          console.log(value);
+        }}
+      </AppContext.Consumer> */}
+      {children}
+    </AppContext.Provider>
   );
 };
 
-export const useAppContext = () => {
-  const context = useContext(AppContext);
-  return context;
-};
+export const useAppContext = () => useContext(AppContext);
