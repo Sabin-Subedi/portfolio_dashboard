@@ -8,10 +8,23 @@ import {
 import { useFormikContext } from "formik";
 import React from "react";
 
-function AppInputField({ name, label, helpText, ...otherProps }) {
-  const { handleChange, handleBlur } = useFormikContext();
+function AppInputField({
+  name,
+  label,
+  fullWidth,
+  required,
+  helpText,
+  ...otherProps
+}) {
+  const { handleChange, handleBlur, values, errors, touched } =
+    useFormikContext();
   return (
-    <FormControl>
+    <FormControl
+      sx={{ marginBottom: "1.2rem" }}
+      fullWidth={fullWidth}
+      required={required}
+      error={touched[name] && errors[name]}
+    >
       {label && (
         <InputLabel htmlFor={name} aria-labelledby={name}>
           {label}
@@ -25,9 +38,10 @@ function AppInputField({ name, label, helpText, ...otherProps }) {
         {...otherProps}
         aria-describedby={`${name}-help-text`}
       />
-      {helpText && (
-        <FormHelperText id={`${name}-help-text`}>{helpText}</FormHelperText>
-      )}
+
+      <FormHelperText id={`${name}-help-text`}>
+        {touched[name] && errors[name] ? errors[name] : helpText}
+      </FormHelperText>
     </FormControl>
   );
 }

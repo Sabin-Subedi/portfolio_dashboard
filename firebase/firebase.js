@@ -39,7 +39,9 @@ class Firebase {
       });
     });
 
-  signInUser = (email, password) =>
+  getCurrentUser = () => this.auth.currentUser;
+
+  signInUser = ({ email, password }) =>
     signInWithEmailAndPassword(this.auth, email, password);
 
   doSignOut = () => this.auth.signOut();
