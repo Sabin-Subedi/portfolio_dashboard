@@ -4,16 +4,19 @@ import {
   Input,
   InputLabel,
   OutlinedInput,
+  TextareaAutosize,
+  TextField,
 } from "@mui/material";
 import { useFormikContext } from "formik";
 import React from "react";
 
-function AppInputField({
+function AppTextField({
   name,
   label,
   fullWidth,
   required,
   helpText,
+  minRows = 8,
   ...otherProps
 }) {
   const { handleChange, handleBlur, values, errors, touched } =
@@ -25,16 +28,16 @@ function AppInputField({
       required={required}
       error={touched[name] && errors[name]}
     >
-      {label && (
+      {/* {label && (
         <InputLabel htmlFor={name} aria-labelledby={name}>
           {label}
         </InputLabel>
-      )}
-      <OutlinedInput
+      )} */}
+      <TextareaAutosize
+        minRows={minRows}
         onChange={handleChange}
         onBlur={handleBlur}
         id={name}
-        value={values[name]}
         label={label}
         {...otherProps}
         aria-describedby={`${name}-help-text`}
@@ -47,4 +50,4 @@ function AppInputField({
   );
 }
 
-export default AppInputField;
+export default AppTextField;

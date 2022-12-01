@@ -14,7 +14,7 @@ import { firebase } from "../firebase/firebase";
 function WithOauthState({ children }) {
   const [loading, setLoading] = useState(true);
   const [state, dispatch] = useContext(AppContext);
-  useEffect(() => {}, []);
+
   const router = useRouter();
 
   const checkAuth = useCallback(async () => {
@@ -22,11 +22,12 @@ function WithOauthState({ children }) {
       const { user, loggedIn } = await firebase.oauthStateChange();
 
       if (user && loggedIn) {
-        console.log("user", user);
         dispatch({
           type: LOGIN_USER,
           payload: user,
         });
+      } else {
+        !router.asPath.includes("/login") && router.push("/login");
       }
     } catch (err) {
       router.push("/login");

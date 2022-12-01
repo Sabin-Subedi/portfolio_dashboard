@@ -18,7 +18,7 @@ import {
   IoSettingsOutline,
 } from "react-icons/io5";
 import { VscCalendar, VscFeedback } from "react-icons/vsc";
-import { FaUser } from "react-icons/fa";
+import { FaFolder, FaUser } from "react-icons/fa";
 import { SiContentful, SiGoogleclassroom } from "react-icons/si";
 import { CgProfile } from "react-icons/cg";
 
@@ -62,6 +62,21 @@ const menus = [
           {
             label: "Cards",
             link: "/user/cards",
+          },
+        ],
+      },
+      {
+        label: "Projects",
+        icon: <FaFolder />,
+        link: "/projects",
+        subMenuItems: [
+          {
+            label: "Lists",
+            link: "/projects/lists",
+          },
+          {
+            label: "Create",
+            link: "/projects/create",
           },
         ],
       },
