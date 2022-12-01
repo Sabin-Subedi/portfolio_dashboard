@@ -31,16 +31,16 @@ const menus = [
         icon: <MdSpeed />,
         link: "/app",
       },
-      {
-        label: "Analytics",
-        icon: <IoAnalyticsOutline />,
-        link: "/analytics",
-      },
-      {
-        label: "Booking",
-        icon: <BsCalendarDate />,
-        link: "booking",
-      },
+      // {
+      //   label: "Analytics",
+      //   icon: <IoAnalyticsOutline />,
+      //   link: "/analytics",
+      // },
+      // {
+      //   label: "Booking",
+      //   icon: <BsCalendarDate />,
+      //   link: "booking",
+      // },
     ],
   },
   {
@@ -62,113 +62,6 @@ const menus = [
           {
             label: "Cards",
             link: "/user/cards",
-          },
-        ],
-      },
-      {
-        label: "Subscriptions",
-        icon: <BsCoin />,
-        link: "/subscription",
-      },
-      {
-        label: "Content",
-        icon: <SiContentful />,
-        link: "/content",
-        subMenuItems: [
-          {
-            label: "Boards",
-            link: "/content/boards",
-          },
-          {
-            label: "Subject",
-            link: "/user/subject",
-          },
-          {
-            label: "Chapters",
-            link: "/user/subject/chapter",
-          },
-        ],
-      },
-      {
-        label: "Exams",
-        icon: <IoNewspaperOutline />,
-        link: "/exams",
-        subMenuItems: [
-          {
-            label: "Production",
-            link: "/exams/production",
-          },
-          {
-            label: "Pipeline",
-            link: "/exams/pipeline",
-          },
-        ],
-      },
-      {
-        label: "Questions",
-        icon: <BsPatchQuestionFill />,
-        link: "/questions",
-        subMenuItems: [
-          {
-            label: "Question Sets",
-            link: "/questions/question_sets",
-          },
-          {
-            label: "Questions List",
-            link: "/questions/question_list",
-          },
-        ],
-      },
-      {
-        label: "Classrooms",
-        icon: <SiGoogleclassroom />,
-        link: "/classrooms",
-        subMenuItems: [
-          {
-            label: "Active Classrooms",
-            link: "/classrooms/active",
-          },
-          {
-            label: "Ended Classrooms",
-            link: "/classrooms/ended",
-          },
-          {
-            label: "In Production",
-            link: "/classrooms/production",
-          },
-        ],
-      },
-      {
-        label: "Reports",
-        icon: <MdReportGmailerrorred />,
-        link: "/reports",
-        subMenuItems: [
-          {
-            label: "Bug Reports",
-            link: "/classrooms/bug_reports",
-          },
-          {
-            label: "Content Reports",
-            link: "/classrooms/content_reports",
-          },
-          {
-            label: "Question Reports",
-            link: "/classrooms/question_reports",
-          },
-        ],
-      },
-      {
-        label: "Customer Response",
-        icon: <VscFeedback />,
-        link: "/customer_response",
-        subMenuItems: [
-          {
-            label: "Contact Us Response",
-            link: "/customer_response/contact_us",
-          },
-          {
-            label: "Feedback Response",
-            link: "/customer_response/feedback",
           },
         ],
       },
@@ -257,7 +150,7 @@ function SideNav() {
         <Box key={nav.title} mt={3}>
           <Typography
             mb={2}
-            variant="subtitle1"
+            variant="subtitle2"
             sx={{ textTransform: "uppercase" }}
           >
             {nav.title}
