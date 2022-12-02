@@ -4,6 +4,7 @@ import AppForm from "../../components/Form/AppForm";
 import * as yup from "yup";
 import AppInputField from "../../components/Form/AppInputField";
 import AppTextField from "../../components/Form/AppTextField";
+import AppQuillField from "../../components/Form/AppQuillField";
 const initialValues = {
   title: "sds",
   description: "",
@@ -46,13 +47,8 @@ function ProjectCreatePage() {
               validationSchema={validationSchema}
             >
               <AppInputField fullWidth name="title" label="Project Title" />
-              <AppInputField
-                minRows={5}
-                multiline
-                fullWidth
-                name="description"
-                label="Description"
-              />
+
+              <AppQuillField name="description" label="Description" />
             </AppForm>
           </Paper>
         </Grid>

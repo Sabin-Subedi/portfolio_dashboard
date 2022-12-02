@@ -1,27 +1,16 @@
 import { Avatar, Box, Paper, Typography } from "@mui/material";
+import Image from "next/image";
 import React from "react";
-import Logo from "../../assets/Logo";
-import { HiChevronDoubleLeft } from "react-icons/hi";
-import NavigationLinkTab from "./NavigationLinkTab";
-import { MdReportGmailerrorred, MdSpeed } from "react-icons/md";
-import {
-  BsCalendarDate,
-  BsCalendarDateFill,
-  BsCoin,
-  BsKanban,
-  BsPatchQuestionFill,
-} from "react-icons/bs";
-import {
-  IoAnalyticsOutline,
-  IoNewspaperOutline,
-  IoSettings,
-  IoSettingsOutline,
-} from "react-icons/io5";
-import { VscCalendar, VscFeedback } from "react-icons/vsc";
-import { FaFolder, FaUser } from "react-icons/fa";
-import { SiContentful, SiGoogleclassroom } from "react-icons/si";
+import { BsKanban } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
+import { FaFolder, FaUser } from "react-icons/fa";
+import { HiChevronDoubleLeft } from "react-icons/hi";
+import { IoSettingsOutline } from "react-icons/io5";
+import { MdSpeed } from "react-icons/md";
+import { VscCalendar } from "react-icons/vsc";
+import Logo from "../../assets/Logo";
 import { useAppContext } from "../../context";
+import NavigationLinkTab from "./NavigationLinkTab";
 
 const menus = [
   {
@@ -102,7 +91,7 @@ const menus = [
 
 function SideNav() {
   const [state, dispatch] = useAppContext();
-  console.log(state);
+  const { user } = state;
   return (
     <Paper
       sx={{
@@ -140,11 +129,11 @@ function SideNav() {
           }}
         >
           <Box sx={{ marginRight: "0.5rem" }}>
-            <Avatar src={"./astronaut.png"} size="lg" />
+            <Avatar src={user?.profileUrl || "/astronaut.png"} size="lg" />
           </Box>
           <Box>
             <Typography variant="h6">
-              {state?.user?.displayName || state?.user?.email}
+              {user?.displayName || user?.email}
             </Typography>
             <Typography variant="body2" sx={{ color: "grey.500" }}>
               admin
