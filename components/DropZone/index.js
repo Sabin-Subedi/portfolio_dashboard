@@ -121,73 +121,73 @@ function Dropzone({
 
   return (
     <section className="container">
-      {files.length !== maxFiles && (
+      {(maxFiles == 1 || (maxFiles > 1 && files.length !== maxFiles)) && (
         <DropBox
           border={1}
           sx={{
             borderStyle: "dashed",
             borderColor: "grey.400",
             backgroundColor: "grey.200",
-            "&::before": {
-              content: '""',
-              width: "100%",
-              position: "absolute",
-              top: 0,
-              background: "white",
-              zIndex: 2,
-              left: 0,
-              height: "100%",
-              opacity: 0,
-
-              transition: "all 0.3s ease",
-            },
-            "&:hover::before": {
-              opacity: 0.4,
-            },
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            {...getRootProps({ className: "dropzone" })}
-          >
-            <input {...getInputProps()} />
+          {files.length !== maxFiles && (
             <Box
-              mr={3}
               sx={{
-                position: "relative",
-                minWidth: "12rem",
-                minHeight: "10rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                "&::before": {
+                  content: '""',
+                  width: "100%",
+                  position: "absolute",
+                  top: 0,
+                  background: "white",
+                  zIndex: 2,
+                  left: 0,
+                  height: "100%",
+                  opacity: 0,
+
+                  transition: "all 0.3s ease",
+                },
+                "&:hover::before": {
+                  opacity: 0.4,
+                },
               }}
+              {...getRootProps({ className: "dropzone" })}
             >
-              <Image src="/file_upload.svg" layout="fill" alt="File Upload" />
+              <input {...getInputProps()} />
+              <Box
+                mr={3}
+                sx={{
+                  position: "relative",
+                  minWidth: "12rem",
+                  minHeight: "10rem",
+                }}
+              >
+                <Image src="/file_upload.svg" layout="fill" alt="File Upload" />
+              </Box>
+              <Box>
+                <Typography color="grey.800" variant="h5">
+                  Drop or Select file
+                </Typography>
+                <Typography fontWeight={300} fontSize="1rem" color="grey.600">
+                  Drop files or click{" "}
+                  <Typography
+                    as="span"
+                    fontWeight={300}
+                    color="primary.main"
+                    sx={{ textDecoration: "underline" }}
+                  >
+                    browse
+                  </Typography>{" "}
+                  through your machine
+                </Typography>
+              </Box>
             </Box>
-            <Box>
-              <Typography color="grey.800" variant="h5">
-                Drop or Select file
-              </Typography>
-              <Typography fontWeight={300} fontSize="1rem" color="grey.600">
-                Drop files or click{" "}
-                <Typography
-                  as="span"
-                  fontWeight={300}
-                  color="primary.main"
-                  sx={{ textDecoration: "underline" }}
-                >
-                  browse
-                </Typography>{" "}
-                through your machine
-              </Typography>
-            </Box>
-          </Box>
+          )}
         </DropBox>
       )}
-      {/* {
-        maxFiles ===1 && selectedFiles.length > 0 && 
-      } */}
+
       {failReason && (
         <Typography mt={1} color="error.main">
           {failReason}
