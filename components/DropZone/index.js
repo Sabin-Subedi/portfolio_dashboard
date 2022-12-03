@@ -3,15 +3,17 @@ import { Box, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React, { useCallback, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { FiX } from "react-icons/fi";
 import { v4 as uuidv4 } from "uuid";
 import FileDetailView from "./FileDetailView";
 import FileThumbnailView from "./FileThumbnailView";
+import SingleImageView from "./SingleImageView";
 
 const DropBox = styled(Box)(({ theme }) => ({
   position: "relative",
   minHeight: "10rem",
   borderRadius: "0.3rem",
-  padding: "1.4rem 0",
+  padding: "1rem 1rem",
   cursor: "pointer",
   transition: "all 0.2s ease-in-out",
 }));
@@ -184,6 +186,9 @@ function Dropzone({
                 </Typography>
               </Box>
             </Box>
+          )}
+          {files.length === 1 && maxFiles == 1 && (
+            <SingleImageView file={files[0]} onRemove={() => setfiles([])} />
           )}
         </DropBox>
       )}
