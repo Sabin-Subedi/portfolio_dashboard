@@ -1,11 +1,12 @@
 import { Box, Typography, Stack, Tooltip, Button } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { FcImageFile } from "react-icons/fc";
 import { FiX } from "react-icons/fi";
 import { useCallback } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const DropBox = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -19,33 +20,91 @@ const DropBox = styled(Box)(({ theme }) => ({
   transition: "all 0.2s ease-in-out",
 }));
 
-function Dropzone({ withThumbnail = true }) {
-  const onDrop = useCallback((acceptedFiles) => {}, []);
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-    maxFiles: 5,
+function Dropzone({ withThumbnail = false }) {
+  const [files, setfiles] = useState([]);
+  const [failReason, setfailReason] = useState(null);
+  const [rejectedFiles, setRejectedFiles] = useState([]);
+  const onDrop = useCallback((acceptedFiles, fileRejection) => {
+    setfailReason();
+
+    setfiles((prev) => [
+      ...prev,
+      ...acceptedFiles.map((file) => {
+        file.key = uuidv4();
+        return file;
+      }),
+    ]);
+    console.log(fileRejection);
+    if (
+      fileRejection.length > 0 &&
+      fileRejection[0]?.errors[0]?.code === "too-many-files"
+    ) {
+      console.log("sadasdl");
+      setfailReason(`Too many Files. Only 2 files are allowed at a time.`);
+    }
+    setRejectedFiles((prev) => [...prev, ...fileRejection]);
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    maxFiles: 2,
+    onDrop,
+    maxSize: 1 * 1000 * 1000,
+    onFileDialogOpen: () => setfailReason(null),
   });
 
-  const files = acceptedFiles.map((file) =>
+  const selectedFiles = files.map((file) =>
     withThumbnail ? (
-      <Box
-        key={file}
-        sx={{
-          position: "relative",
-          width: "5rem",
-          height: "5rem",
-          borderRadius: "0.5rem",
-          overflow: "hidden",
-          pointerEvents: "all",
-        }}
+      <Tooltip
+        sx={{ backgroundColor: "black" }}
+        placement="bottom"
+        title={file.name}
+        key={file.key}
       >
-        <div data-tip="dsads">
-          <Image
-            src={URL.createObjectURL(file)}
-            layout="fill"
-            alt={file.name}
-          />
-        </div>
-      </Box>
+        <Box
+          key={file}
+          sx={{
+            position: "relative",
+            width: "6rem",
+            height: "6rem",
+            borderRadius: "0.5rem",
+            overflow: "hidden",
+          }}
+        >
+          <>
+            <Image
+              src={URL.createObjectURL(file)}
+              layout="fill"
+              alt={file.name}
+            />
+            <Box
+              px={0.5}
+              position="absolute"
+              py={0.2}
+              top={4}
+              right={5}
+              borderRadius="100%"
+              color="grey.600"
+              ml="auto"
+              onClick={() =>
+                setfiles((prev) => prev.filter((fi) => file.key !== fi.key))
+              }
+              sx={{
+                transition: "all 0.2s ease-in",
+                cursor: "pointer",
+                backgroundColor: "black",
+                opacity: 0.3,
+                "&:hover": {
+                  opacity: 0.5,
+                },
+              }}
+            >
+              <Box opacity={1}>
+                <FiX color="white" size={14} />
+              </Box>
+            </Box>
+          </>
+        </Box>
+      </Tooltip>
     ) : (
       <Box
         border={1}
@@ -57,7 +116,7 @@ function Dropzone({ withThumbnail = true }) {
           borderColor: "grey.300",
           borderRadius: "0.5rem",
         }}
-        key={file}
+        key={file.key}
       >
         <FcImageFile size={40} />
         <Box ml={1}>
@@ -74,6 +133,9 @@ function Dropzone({ withThumbnail = true }) {
           borderRadius="100%"
           color="grey.600"
           ml="auto"
+          onClick={() =>
+            setfiles((prev) => prev.filter((fi) => file.key !== fi.key))
+          }
           sx={{
             transition: "all 0.2s ease-in",
             cursor: "pointer",
@@ -144,10 +206,11 @@ function Dropzone({ withThumbnail = true }) {
           </Typography>
         </Box>
       </DropBox>
+      {failReason && <Typography color="error.main">{failReason}</Typography>}
       <aside>
         <h4>Files</h4>
         <Stack direction={withThumbnail ? "row" : "column"} spacing={1}>
-          {files}
+          {selectedFiles}
         </Stack>
       </aside>
     </section>

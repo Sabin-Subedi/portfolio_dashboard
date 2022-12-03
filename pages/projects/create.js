@@ -35,7 +35,7 @@ function ProjectCreatePage() {
       </Typography>
 
       <Grid container spacing={3}>
-        <Grid item xs={8}>
+        <Grid mb={5} item xs={8}>
           <Paper
             p={5}
             sx={{
