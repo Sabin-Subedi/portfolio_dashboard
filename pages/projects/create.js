@@ -1,10 +1,12 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { Grid, Paper, Tooltip, Typography } from "@mui/material";
 import React from "react";
 import AppForm from "../../components/Form/AppForm";
 import * as yup from "yup";
 import AppInputField from "../../components/Form/AppInputField";
-import AppTextField from "../../components/Form/AppTextField";
+
 import AppQuillField from "../../components/Form/AppQuillField";
+import Dropzone from "../../components/DropZone";
+
 const initialValues = {
   title: "sds",
   description: "",
@@ -31,6 +33,7 @@ function ProjectCreatePage() {
       <Typography mb={5} fontWeight={500} variant="h3">
         Create a new project
       </Typography>
+
       <Grid container spacing={3}>
         <Grid item xs={8}>
           <Paper
@@ -49,6 +52,7 @@ function ProjectCreatePage() {
               <AppInputField fullWidth name="title" label="Project Title" />
 
               <AppQuillField name="description" label="Description" />
+              <Dropzone />
             </AppForm>
           </Paper>
         </Grid>

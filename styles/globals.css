@@ -17,12 +17,14 @@ a {
 }
 
 ::-webkit-scrollbar {
-  max-width: 0.5rem;
+  max-width: 0.3rem;
+
   /* background-color: ; */
 }
 
 ::-webkit-scrollbar-thumb {
   background: #0a080862;
+  border-radius: 100px;
 }
 
 .ql-container {
