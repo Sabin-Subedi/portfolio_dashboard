@@ -10,6 +10,7 @@ import { MdSpeed } from "react-icons/md";
 import { VscCalendar } from "react-icons/vsc";
 import Logo from "../../assets/Logo";
 import { useAppContext } from "../../context";
+import { getNameFromEmail } from "../../utils/utils";
 import NavigationLinkTab from "./NavigationLinkTab";
 
 const menus = [
@@ -133,12 +134,14 @@ function SideNav() {
             <Avatar src={user?.profileUrl || "/astronaut.png"} size="lg" />
           </Box>
           <Box>
-            <Typography variant="h6">
-              {user?.displayName || user?.email}
+            <Typography variant="h6" textTransform="capitalize">
+              {user?.displayName || getNameFromEmail(user?.email)}
             </Typography>
-            <Typography variant="body2" sx={{ color: "grey.500" }}>
-              admin
-            </Typography>
+            {user?.email && (
+              <Typography variant="body2" sx={{ color: "grey.500" }}>
+                {user.email}
+              </Typography>
+            )}
           </Box>
         </Box>
       </Box>
