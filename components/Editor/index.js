@@ -23,9 +23,11 @@ class Editor extends React.Component {
   }
 
   render() {
+    const { error } = this.props;
     return (
       <div>
         <ReactQuill
+          className={error && "ql-error"}
           theme={this.state.theme}
           onChange={this.handleChange}
           value={this.state.editorHtml}

@@ -33,7 +33,7 @@ function AppQuillField({
         <Typography
           as="label"
           fontWeight={500}
-          color="grey.600"
+          color={touched[name] && errors[name] ? "error.main" : "grey.600"}
           mb={1}
           htmlFor={name}
           aria-labelledby={name}
@@ -41,7 +41,7 @@ function AppQuillField({
           {label}
         </Typography>
       )}
-      <Editor />
+      <Editor error={touched[name] && errors[name]} />
       <FormHelperText id={`${name}-help-text`}>
         {touched[name] && errors[name] ? errors[name] : helpText}
       </FormHelperText>

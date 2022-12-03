@@ -20,7 +20,7 @@ function AppInputField({
     useFormikContext();
   return (
     <FormControl
-      sx={{ marginBottom: "1.2rem" }}
+      sx={{ marginBottom: "1rem" }}
       fullWidth={fullWidth}
       required={required}
       error={touched[name] && errors[name]}

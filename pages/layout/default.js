@@ -4,13 +4,29 @@ import SideNav from "../../components/SideNav";
 
 const Layout = ({ children }) => {
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
-      <Box sx={{ flexBasis: "20%", height: "100%" }}>
+    <Box sx={{ display: "flex", justifyContent: "flex-end", height: "100vh" }}>
+      <Box
+        sx={{
+          flexBasis: "24%",
+          height: "100%",
+          "&::before": {
+            content: '""',
+            width: "100%",
+            position: "relative",
+            top: 0,
+            background: "white",
+            zIndex: 2,
+            left: 0,
+            height: "100%",
+            opacity: 0,
+          },
+        }}
+      >
         <SideNav />
       </Box>
-      <Box sx={{ flexBasis: "80%", px: 5 }}>
+      <Box sx={{ flexBasis: "76%", px: 5 }}>
         <Navbar />
-        {children}
+        <Box>{children}</Box>
       </Box>
     </Box>
   );

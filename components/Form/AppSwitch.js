@@ -28,25 +28,29 @@ const MySwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-function AppSwitchField({
-  name,
-  label,
-  fullWidth = false,
-  required,
-  helpText,
-  ...otherProps
-}) {
+function AppSwitchField({ name, label, required, helpText, ...otherProps }) {
   const { handleChange, handleBlur, values, errors, touched } =
     useFormikContext();
   return (
     <FormControl
-      sx={{ marginBottom: "1.2rem" }}
-      fullWidth={fullWidth}
+      sx={{ marginBottom: "0.25rem" }}
+      fullWidth
       required={required}
       error={touched[name] && errors[name]}
     >
       {label && (
         <FormControlLabel
+          labelPlacement="start"
+          mx={0}
+          sx={{
+            width: "100%",
+            marginLeft: "0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            fontWeight: "400",
+            color: "grey.700",
+          }}
           control={
             <MySwitch
               onChange={handleChange}

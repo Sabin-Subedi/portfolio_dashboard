@@ -97,6 +97,7 @@ function SideNav() {
       sx={{
         py: 3,
         px: 2,
+        position: "fixed",
         maxHeight: "100vh",
         overflow: "scroll",
         height: "100%",

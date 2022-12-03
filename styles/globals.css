@@ -110,6 +110,10 @@ a {
   border-color: transparent !important;
 }
 
+.ql-error {
+  border-color: red !important;
+}
+
 .quill {
   border: 1px solid rgba(145, 158, 171, 0.32);
   border-radius: 5px;
