@@ -98,12 +98,16 @@ function SideNav() {
       sx={{
         py: 3,
         px: 2,
+        borderRight: "1px dashed",
+        borderColor: "grey.300",
         position: "fixed",
         maxHeight: "100vh",
-        overflow: "scroll",
+        overflowY: "hidden",
         height: "100%",
-        borderRight: "1px dashed ",
-        borderColor: "grey.300",
+        marginRight: 1,
+        "&:hover": {
+          overflowY: "scroll",
+        },
       }}
     >
       <Box
