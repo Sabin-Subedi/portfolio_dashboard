@@ -115,3 +115,7 @@ a {
   border-radius: 5px;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
