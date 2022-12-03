@@ -6,6 +6,8 @@ import AppInputField from "../../components/Form/AppInputField";
 
 import AppQuillField from "../../components/Form/AppQuillField";
 import Dropzone from "../../components/DropZone";
+import AppFileDropField from "../../components/Form/AppFileDropField";
+import AppSwitchField from "../../components/Form/AppSwitch";
 
 const initialValues = {
   title: "sds",
@@ -33,41 +35,45 @@ function ProjectCreatePage() {
       <Typography mb={5} fontWeight={500} variant="h3">
         Create a new project
       </Typography>
-
-      <Grid container spacing={3}>
-        <Grid mb={5} item xs={8}>
-          <Paper
-            p={5}
-            sx={{
-              borderRadius: "1rem",
-              boxShadow:
-                "rgb(145 158 171 / 20%) 0px 0px 2px 0px, rgb(145 158 171 / 12%) 0px 12px 24px -4px",
-              padding: 3,
-            }}
-          >
-            <AppForm
-              initialValues={initialValues}
-              validationSchema={validationSchema}
+      <AppForm
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+      >
+        <Grid container spacing={3}>
+          <Grid mb={5} item xs={8}>
+            <Paper
+              p={5}
+              sx={{
+                borderRadius: "1rem",
+                boxShadow:
+                  "rgb(145 158 171 / 20%) 0px 0px 2px 0px, rgb(145 158 171 / 12%) 0px 12px 24px -4px",
+                padding: 3,
+              }}
             >
               <AppInputField fullWidth name="title" label="Project Title" />
 
               <AppQuillField name="description" label="Description" />
-              <Dropzone />
-            </AppForm>
-          </Paper>
+              <AppFileDropField
+                name="project_image"
+                label="Project Cover Image"
+              />
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper
+              p={5}
+              sx={{
+                borderRadius: "1rem",
+                boxShadow:
+                  "rgb(145 158 171 / 20%) 0px 0px 2px 0px, rgb(145 158 171 / 12%) 0px 12px 24px -4px",
+                padding: 3,
+              }}
+            >
+              <AppSwitchField name="is_published" label="Publish" />
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid item xs={4}>
-          <Paper
-            p={5}
-            sx={{
-              borderRadius: "1rem",
-              boxShadow:
-                "rgb(145 158 171 / 20%) 0px 0px 2px 0px, rgb(145 158 171 / 12%) 0px 12px 24px -4px",
-              padding: 3,
-            }}
-          ></Paper>
-        </Grid>
-      </Grid>
+      </AppForm>
     </>
   );
 }

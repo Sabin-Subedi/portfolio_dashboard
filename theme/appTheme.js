@@ -143,6 +143,31 @@ const appTheme = createTheme({
         },
       },
     },
+    MuiSwitch: {
+      styleOverrides: {
+        sizeMedium: {
+          width: "58px",
+          height: "38px",
+          padding: "9px 13px 9px 12px",
+          display: "flex",
+        },
+        switchBase: {
+          padding: "12px",
+          left: "3px",
+        },
+
+        thumb: {
+          width: "14px",
+          height: "14px",
+        },
+        track: {
+          borderRadius: "14px",
+        },
+      },
+      defaultProps: {
+        size: "medium",
+      },
+    },
   },
 });
 
