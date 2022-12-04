@@ -1,14 +1,19 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import React, { useMemo } from "react";
 import { FiX } from "react-icons/fi";
 import CircularProgressWithLabel from "../Loader/CircularProgressWithLabel";
 
 function SingleImageView({ onRemove, file }) {
-  const imageURL = useMemo(
-    () => file?.imageUrl || URL.createObjectURL(file),
+  const { imageURL, progress, progressValue } = useMemo(
+    () => ({
+      imageURL: file?.imageUrl || URL.createObjectURL(file),
+      progress: Boolean(file?.progress && file.progress < 100),
+      progressValue: file?.progress,
+    }),
     [file]
   );
+
   return (
     <Box
       sx={{
@@ -28,8 +33,7 @@ function SingleImageView({ onRemove, file }) {
           zIndex: 2,
           left: 0,
           height: "100%",
-          opacity: 0.2,
-
+          opacity: progress ? 0.7 : 0.3,
           transition: "all 0.3s ease",
         },
         "&:hover::before": {
@@ -66,9 +70,25 @@ function SingleImageView({ onRemove, file }) {
           <FiX color="black" size={14} />
         </Box>
       </Box>
-
-      {file?.progress && Number(file.progress) < 100 && (
-        <CircularProgressWithLabel value={file.progress} />
+      {progress && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            filter: "none !important",
+            zIndex: 10,
+            transform: "translate(-50%,-50%)",
+          }}
+        >
+          <CircularProgressWithLabel value={progressValue} />
+          <Typography mt={1} variant="subtitle1" color="white">
+            Uploading ....
+          </Typography>
+        </Box>
       )}
     </Box>
   );

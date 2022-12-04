@@ -22,12 +22,11 @@ const DropBox = styled(Box)(({ theme }) => ({
 
 function Dropzone({
   withThumbnail = false,
-  maxFiles = 1,
+  maxFiles = 2,
   fileSize = 1 * 1000 * 1000,
 }) {
-  const { loading, error, data, fire } = useFirebaseStorage({});
   const [files, setFiles] = useState([]);
-  const [filesUploadProgress, setFilesUploadProgress] = useState([]);
+
   const [failReason, setFailReason] = useState(null);
   const [rejectedFiles, setRejectedFiles] = useState([]);
   const onDrop = useCallback(
@@ -66,54 +65,56 @@ function Dropzone({
       ]);
 
       acceptedFiles.forEach(async (file) => {
-        file.key = uuidv4();
-        file.uploading = true;
-        setFiles((prev) => [...prev, file]);
+        try {
+          file.key = uuidv4();
+          file.uploading = true;
+          setFiles((prev) => [...prev, file]);
 
-        await firebase.uploadFileBlob({
-          file,
-          folder: "projects",
-          onUploading: (progress) => {
-            const nFile = file;
-            nFile.progress = progress;
-            setFiles((prev) => [
-              ...prev.filter((f) => f.key !== file.key),
-              nFile,
-            ]);
-          },
-          onUploadError: (error) => {
-            const nFile = file;
-            nFile.errors = [error];
-            if (maxFiles === 1) {
-              setFiles([]);
-              setFailReason(error.message);
-            }
-            setFiles((prev) => prev.filter((f) => f.key !== file.key));
-            setRejectedFiles((prev) => [...prev, nFile]);
-          },
-          onUpload: (url) => {
-            const nFile = file;
-            nFile.imageUrl = url;
-            setFiles((prev) => [
-              ...prev.filter((f) => f.key !== file.key),
-              nFile,
-            ]);
-          },
-        });
+          await firebase.uploadFileBlob({
+            file,
+            folder: "projects",
+            onUploading: (progress) => {
+              const nFile = file;
+              nFile.progress = progress;
+
+              setFiles((prev) => [
+                ...prev.filter((f) => f.key !== file.key),
+                nFile,
+              ]);
+            },
+            onUploadError: (error) => {
+              if (maxFiles === 1) {
+                setFiles([]);
+                setFailReason(error.message);
+                return;
+              }
+              setFiles((prev) => prev.filter((f) => f.key !== file.key));
+              setRejectedFiles((prev) => [
+                ...prev,
+                {
+                  file,
+                  errors: ["Couldn't upload this file."],
+                },
+              ]);
+            },
+            onUpload: (url) => {
+              const nFile = file;
+              nFile.imageUrl = url;
+              setFiles((prev) => [
+                ...prev.filter((f) => f.key !== file.key),
+                nFile,
+              ]);
+            },
+          });
+        } catch (err) {
+          console.log(err);
+        }
       });
-
-      // setFiles((prev) => [
-      //   ...prev,
-      //   ...acceptedFiles.map((file) => {
-      //     file.key = uuidv4();
-      //     return file;
-      //   }),
-      // ]);
     },
     [maxFiles, fileSize]
   );
 
-  console.log(files);
+  console.log(rejectedFiles);
 
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles,

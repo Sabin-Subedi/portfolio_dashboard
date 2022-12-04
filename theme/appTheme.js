@@ -54,11 +54,6 @@ const appTheme = createTheme({
       700: "#454F5B",
       800: "#212B36",
       900: "#161C24",
-      lighter: "#D0F2FF",
-      light: "#74CAFF",
-      main: "#1890FF",
-      dark: "#0C53B7",
-      darker: "#04297A",
     },
   },
   typography: {
