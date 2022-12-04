@@ -93,8 +93,11 @@ function Dropzone({
           },
           onUpload: (url) => {
             const nFile = file;
-            nFile.url = url;
-            setFiles((prev) => prev.filter((f) => f.key !== file.key));
+            nFile.imageUrl = url;
+            setFiles((prev) => [
+              ...prev.filter((f) => f.key !== file.key),
+              nFile,
+            ]);
           },
         });
       });

@@ -77,6 +77,7 @@ class Firebase {
           const progress = Math.round(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
+
           onUploading && onUploading(progress);
         },
         (error) => {

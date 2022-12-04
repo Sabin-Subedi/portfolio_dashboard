@@ -1,9 +1,14 @@
 import { Box } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useMemo } from "react";
 import { FiX } from "react-icons/fi";
+import CircularProgressWithLabel from "../Loader/CircularProgressWithLabel";
 
 function SingleImageView({ onRemove, file }) {
+  const imageURL = useMemo(
+    () => file?.imageUrl || URL.createObjectURL(file),
+    [file]
+  );
   return (
     <Box
       sx={{
@@ -32,12 +37,7 @@ function SingleImageView({ onRemove, file }) {
         },
       }}
     >
-      <Image
-        layout="fill"
-        objectFit="cover"
-        src={URL.createObjectURL(file)}
-        alt={file.name}
-      />
+      <Image layout="fill" objectFit="cover" src={imageURL} alt={file.name} />
       <Box
         px={0.4}
         position="absolute"
@@ -66,6 +66,10 @@ function SingleImageView({ onRemove, file }) {
           <FiX color="black" size={14} />
         </Box>
       </Box>
+
+      {file?.progress && Number(file.progress) < 100 && (
+        <CircularProgressWithLabel value={file.progress} />
+      )}
     </Box>
   );
 }
