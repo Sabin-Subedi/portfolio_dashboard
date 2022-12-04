@@ -70,39 +70,10 @@ function Dropzone({
         file.uploading = true;
         setFiles((prev) => [...prev, file]);
 
-        const fileName = `${uuidv4()}.${file.name.split(".").pop()}`;
-        const uploadFile = {
-          ...file,
-          name: fileName,
-        };
-        const uploadTask = firebase.uploadFileBlob(
-          new Blob([file], { type: file.type }),
-          fileName,
-          "projects"
-        );
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress = Math.round(
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            );
-            setFilesUploadProgress((prev) => [
-              ...prev,
-              {
-                key: file.key,
-                progress,
-              },
-            ]);
-          },
-          (error) => {
-            console.log(error);
-          },
-          () => {
-            firebase.downloadFileUrl(uploadTask.snapshot.ref).then((url) => {
-              console.log(url);
-            });
-          }
-        );
+        const uploadTask = firebase.uploadFileBlob({
+          file,
+          folder: "projects",
+        });
       });
 
       // setFiles((prev) => [

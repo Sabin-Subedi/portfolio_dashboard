@@ -11,6 +11,7 @@ import {
   uploadBytes,
   uploadBytesResumable,
 } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 let instance;
 
 // Your web app's Firebase configuration
@@ -52,14 +53,42 @@ class Firebase {
 
   getCurrentUser = () => this.auth.currentUser;
 
-  uploadFileBlob = (file, fileName, folder, metadata) => {
+  uploadFileBlob = ({
+    file,
+    folder,
+    metadata,
+    onUploading,
+    onUploadError,
+    onUpload,
+  }) => {
+    console.log(Object.keys(this.storageFolderRefs).includes(folder));
     if (!file) throw new Error("No file provided");
     if (
       folder === null ||
       Object.keys(this.storageFolderRefs).includes(folder)
     ) {
+      const fileName = `${uuidv4()}.${file.name.split(".").pop()}`;
       const imgRef = ref(this.storageFolderRefs[folder], fileName);
-      return uploadBytesResumable(imgRef, file, metadata);
+      const uploadTask = uploadBytesResumable(imgRef, file, metadata);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          onUploading && onUploading(progress);
+        },
+        (error) => {
+          onUploadError && onUploadError(error);
+        },
+        () => {
+          firebase.downloadFileUrl(uploadTask.snapshot.ref).then((url) => {
+            onUpload && onUpload(url);
+          });
+        }
+      );
+      return uploadTask;
     }
     throw new Error("Invalid folder name");
   };
