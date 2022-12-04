@@ -65,14 +65,37 @@ function Dropzone({
         }),
       ]);
 
-      acceptedFiles.forEach((file) => {
+      acceptedFiles.forEach(async (file) => {
         file.key = uuidv4();
         file.uploading = true;
         setFiles((prev) => [...prev, file]);
 
-        const uploadTask = firebase.uploadFileBlob({
+        await firebase.uploadFileBlob({
           file,
           folder: "projects",
+          onUploading: (progress) => {
+            const nFile = file;
+            nFile.progress = progress;
+            setFiles((prev) => [
+              ...prev.filter((f) => f.key !== file.key),
+              nFile,
+            ]);
+          },
+          onUploadError: (error) => {
+            const nFile = file;
+            nFile.errors = [error];
+            if (maxFiles === 1) {
+              setFiles([]);
+              setFailReason(error.message);
+            }
+            setFiles((prev) => prev.filter((f) => f.key !== file.key));
+            setRejectedFiles((prev) => [...prev, nFile]);
+          },
+          onUpload: (url) => {
+            const nFile = file;
+            nFile.url = url;
+            setFiles((prev) => prev.filter((f) => f.key !== file.key));
+          },
         });
       });
 
