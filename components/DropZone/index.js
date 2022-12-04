@@ -5,6 +5,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FiX } from "react-icons/fi";
 import { v4 as uuidv4 } from "uuid";
+import { firebase } from "../../firebase/firebase";
 import useFirebaseStorage from "../../hooks/useFirebaseStorage";
 import FileDetailView from "./FileDetailView";
 import FileThumbnailView from "./FileThumbnailView";
@@ -26,19 +27,12 @@ function Dropzone({
 }) {
   const { loading, error, data, fire } = useFirebaseStorage({});
   const [files, setFiles] = useState([]);
+  const [filesUploadProgress, setFilesUploadProgress] = useState([]);
   const [failReason, setFailReason] = useState(null);
   const [rejectedFiles, setRejectedFiles] = useState([]);
   const onDrop = useCallback(
     (acceptedFiles, failedFiles) => {
       setFailReason();
-
-      setFiles((prev) => [
-        ...prev,
-        ...acceptedFiles.map((file) => {
-          file.key = uuidv4();
-          return file;
-        }),
-      ]);
 
       if (failedFiles.length > 0 && maxFiles === 1) {
         if (failedFiles[0]?.errors[0]?.code === "file-too-large") {
@@ -66,14 +60,63 @@ function Dropzone({
       setRejectedFiles((prev) => [
         ...prev,
         ...failedFiles.map((file) => {
-          console.log(file);
           file.key = uuidv4();
           return file;
         }),
       ]);
+
+      acceptedFiles.forEach((file) => {
+        file.key = uuidv4();
+        file.uploading = true;
+        setFiles((prev) => [...prev, file]);
+
+        const fileName = `${uuidv4()}.${file.name.split(".").pop()}`;
+        const uploadFile = {
+          ...file,
+          name: fileName,
+        };
+        const uploadTask = firebase.uploadFileBlob(
+          new Blob([file], { type: file.type }),
+          fileName,
+          "projects"
+        );
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+            setFilesUploadProgress((prev) => [
+              ...prev,
+              {
+                key: file.key,
+                progress,
+              },
+            ]);
+          },
+          (error) => {
+            console.log(error);
+          },
+          () => {
+            firebase.downloadFileUrl(uploadTask.snapshot.ref).then((url) => {
+              console.log(url);
+            });
+          }
+        );
+      });
+
+      // setFiles((prev) => [
+      //   ...prev,
+      //   ...acceptedFiles.map((file) => {
+      //     file.key = uuidv4();
+      //     return file;
+      //   }),
+      // ]);
     },
     [maxFiles, fileSize]
   );
+
+  console.log(files);
 
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles,

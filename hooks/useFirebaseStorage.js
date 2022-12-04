@@ -3,16 +3,23 @@ import { firebase } from "../firebase/firebase";
 
 function useFirebaseStorage({}) {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [data, setData] = useState({ code: null, message: null });
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [error, setError] = useState({ code: null, message: null });
+  const [data, setData] = useState();
+  const [imgUrl, setImgUrl] = useState(null);
 
   const fire = useCallback(async (file, folder) => {
     setError({ code: null, message: null });
     setData(null);
     setLoading(true);
     try {
-      const response = await firebase.uploadFileBlob(file, folder);
-      const url = await firebase.downloadFileUrl(response.ref);
+      const snapshot = await firebase.uploadFileBlob(file, file.name, folder);
+      const progress = Math.round(
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      );
+      setUploadProgress(progress);
+
+      snapshot.state === "success" && setImgUrl(snapshot.ref.fullPath);
       setData({ url });
     } catch (error) {
       console.log(error.name);
