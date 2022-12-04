@@ -1,5 +1,4 @@
 import { Avatar, Box, Paper, Typography } from "@mui/material";
-import Image from "next/image";
 import React from "react";
 import { BsKanban } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
@@ -66,16 +65,6 @@ const menus = [
   {
     title: "Your Account",
     menuItems: [
-      {
-        label: "Calendar",
-        icon: <VscCalendar />,
-        link: "/calendar",
-      },
-      {
-        label: "Todo List",
-        icon: <BsKanban />,
-        link: "/todo",
-      },
       {
         label: "Profile",
         icon: <CgProfile />,

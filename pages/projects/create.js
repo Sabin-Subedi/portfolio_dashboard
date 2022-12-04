@@ -20,15 +20,20 @@ const initialValues = {
   github_link: "",
   tools: [],
   order: -1,
+  cover_image: null,
 };
 
 const validationSchema = yup.object().shape({
   title: yup.string().required().label("Title"),
-  description: yup.string().required().label("Description"),
-  live_project_link: yup.string().required().label("Live Project Link"),
-  github_link: yup.string().required().label("Github Link"),
+  description: yup.string().required().min(100).label("Description"),
+  live_project_link: yup.string().url().required().label("Live Project Link"),
+  github_link: yup.string().url().required().label("Github Link"),
   order: yup.number().label("Order"),
-  tools: yup.array().of(yup.string()).required().label("Label"),
+  tools: yup
+    .array()
+    .min(2, "Must have at least 2 tools.")
+    .required()
+    .label("Tools"),
 });
 
 function ProjectCreatePage() {
@@ -88,6 +93,7 @@ function ProjectCreatePage() {
                 sx={{ marginTop: "1rem" }}
                 name="tools"
                 label="Tools"
+                options={[{ label: "React", value: "react" }]}
               />
             </Paper>
             <AppFormButton

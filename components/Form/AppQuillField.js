@@ -41,7 +41,12 @@ function AppQuillField({
           {label}
         </Typography>
       )}
-      <Editor error={touched[name] && errors[name]} />
+      <Editor
+        onChange={(value) => {
+          setFieldValue(name, value);
+        }}
+        error={touched[name] && errors[name]}
+      />
       <FormHelperText id={`${name}-help-text`}>
         {touched[name] && errors[name] ? errors[name] : helpText}
       </FormHelperText>

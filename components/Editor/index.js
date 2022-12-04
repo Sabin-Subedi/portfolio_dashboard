@@ -6,6 +6,50 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 /*
  * Simple editor component that takes placeholder text as a prop
  */
+
+const color = [
+  "#D0F2FF",
+  "#74CAFF",
+  "#1890FF",
+  "#0C53B7",
+  "#04297A",
+  "#EBD6FD",
+  "#B985F4",
+  "#7635dc",
+  "#431A9E",
+  "#200A69",
+
+  "#D1FFFC",
+  "#76F2FF",
+  "#1CCAFF",
+  "#0E77B7",
+  "#053D7A",
+  "#C8FACD",
+  "#5BE584",
+  "#00AB55",
+  "#007B55",
+  "#005249",
+  "#FFF7CD",
+  "#FFE16A",
+  "#FFC107",
+  "#B78103",
+  "#7A4F01",
+  "#FFE7D9",
+  "#FFA48D",
+  "#FF4842",
+  "#B72136",
+  "#7A0C2E",
+
+  "#F9FAFB",
+  "#F4F6F8",
+  "#DFE3E8",
+  "#C4CDD5",
+  "#919EAB",
+  "#637381",
+  "#454F5B",
+  "#212B36",
+  "#161C24",
+];
 class Editor extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +58,10 @@ class Editor extends React.Component {
   }
 
   handleChange(html) {
-    this.setState({ editorHtml: html });
+    this.setState({ editorHtml: html }, async (state) => {
+      console.log(this.state.editorHtml);
+      this.props.onChange && this.props.onChange(this.state.editorHtml);
+    });
   }
 
   handleThemeChange(newTheme) {
@@ -51,6 +98,12 @@ Editor.modules = {
 
     ["bold", "italic", "underline", "strike", "blockquote"],
     [
+      { color: color },
+      {
+        background: color,
+      },
+    ],
+    [
       { list: "ordered" },
       { list: "bullet" },
       { indent: "-1" },
@@ -59,6 +112,7 @@ Editor.modules = {
     ["code-block", "link", "image", "video"],
     ["clean"],
   ],
+
   clipboard: {
     // toggle to add extra line breaks when pasting HTML:
     matchVisual: false,
