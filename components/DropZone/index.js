@@ -5,6 +5,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FiX } from "react-icons/fi";
 import { v4 as uuidv4 } from "uuid";
+import useFirebaseStorage from "../../hooks/useFirebaseStorage";
 import FileDetailView from "./FileDetailView";
 import FileThumbnailView from "./FileThumbnailView";
 import SingleImageView from "./SingleImageView";
@@ -23,14 +24,15 @@ function Dropzone({
   maxFiles = 1,
   fileSize = 1 * 1000 * 1000,
 }) {
-  const [files, setfiles] = useState([]);
-  const [failReason, setfailReason] = useState(null);
+  const { loading, error, data, fire } = useFirebaseStorage({});
+  const [files, setFiles] = useState([]);
+  const [failReason, setFailReason] = useState(null);
   const [rejectedFiles, setRejectedFiles] = useState([]);
   const onDrop = useCallback(
     (acceptedFiles, failedFiles) => {
-      setfailReason();
+      setFailReason();
 
-      setfiles((prev) => [
+      setFiles((prev) => [
         ...prev,
         ...acceptedFiles.map((file) => {
           file.key = uuidv4();
@@ -40,7 +42,7 @@ function Dropzone({
 
       if (failedFiles.length > 0 && maxFiles === 1) {
         if (failedFiles[0]?.errors[0]?.code === "file-too-large") {
-          setfailReason(
+          setFailReason(
             ` ${(failedFiles[0]?.file.size / 1000).toFixed(
               2
             )} KB - File is larger than ${(fileSize / 1000).toFixed(
@@ -49,14 +51,14 @@ function Dropzone({
           );
           return;
         }
-        setfailReason(failedFiles[0]?.errors[0]?.message);
+        setFailReason(failedFiles[0]?.errors[0]?.message);
         return;
       }
       if (
         failedFiles.length > 0 &&
         failedFiles[0]?.errors[0]?.code === "too-many-files"
       ) {
-        setfailReason(
+        setFailReason(
           `Too many Files. Only ${maxFiles} files are allowed at a time.`
         );
         return;
@@ -78,7 +80,7 @@ function Dropzone({
     multiple: maxFiles > 1,
     onDrop,
     maxSize: fileSize,
-    onFileDialogOpen: () => setfailReason(null),
+    onFileDialogOpen: () => setFailReason(null),
   });
 
   const selectedFiles = useMemo(
@@ -89,7 +91,7 @@ function Dropzone({
             file={file}
             key={file.key}
             onRemove={() =>
-              setfiles((prev) => prev.filter((fi) => file.key !== fi.key))
+              setFiles((prev) => prev.filter((fi) => file.key !== fi.key))
             }
           />
         ) : (
@@ -97,7 +99,7 @@ function Dropzone({
             file={file}
             key={file.key}
             onRemove={() =>
-              setfiles((prev) => prev.filter((fi) => file.key !== fi.key))
+              setFiles((prev) => prev.filter((fi) => file.key !== fi.key))
             }
           />
         )
@@ -188,7 +190,7 @@ function Dropzone({
             </Box>
           )}
           {files.length === 1 && maxFiles == 1 && (
-            <SingleImageView file={files[0]} onRemove={() => setfiles([])} />
+            <SingleImageView file={files[0]} onRemove={() => setFiles([])} />
           )}
         </DropBox>
       )}

@@ -1,11 +1,10 @@
 import { initializeApp } from "firebase/app";
 import {
-  createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 let instance;
 
 // Your web app's Firebase configuration
@@ -25,6 +24,12 @@ class Firebase {
     }
     this.app = initializeApp(config);
     this.auth = getAuth(this.app);
+    this.storage = getStorage(this.app);
+    this.storageFolderRefs = {
+      projects: ref(this.storage, "projects"),
+      skills: ref(this.storage, "skills"),
+      resume: ref(this.storage, "resume"),
+    };
     instance = this;
   }
 
@@ -40,6 +45,21 @@ class Firebase {
     });
 
   getCurrentUser = () => this.auth.currentUser;
+
+  uploadFileBlob = (file, folder, metadata) => {
+    if (!file) throw new Error("No file provided");
+    if (
+      folder === null ||
+      Object.keys(this.storageFolderRefs).includes(folder)
+    ) {
+      return uploadBytes(this.storageFolderRefs[folder], file, metadata);
+    }
+    throw new Error("Invalid folder name");
+  };
+
+  downloadFileUrl = (uploadRef) => {
+    return getDownloadURL(uploadRef);
+  };
 
   signInUser = ({ email, password }) =>
     signInWithEmailAndPassword(this.auth, email, password);

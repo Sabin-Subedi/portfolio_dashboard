@@ -3,8 +3,8 @@ import React, { useCallback, useState } from "react";
 
 function useFirebase({ firebaseFunc }) {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [data, setData] = useState({ code: null, message: null });
+  const [error, setError] = useState({ code: null, message: null });
+  const [data, setData] = useState(null);
 
   const fire = useCallback(
     async (values) => {
