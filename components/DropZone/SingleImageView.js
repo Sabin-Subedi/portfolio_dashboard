@@ -5,11 +5,11 @@ import { FiX } from "react-icons/fi";
 import CircularProgressWithLabel from "../Loader/CircularProgressWithLabel";
 
 function SingleImageView({ onRemove, file }) {
-  const { imageURL, progress, progressValue } = useMemo(
+  const progress = Boolean(file.progress >= 0 && file.progress < 100);
+  const progressValue = file?.progress;
+  const { imageURL } = useMemo(
     () => ({
       imageURL: file?.imageUrl || URL.createObjectURL(file),
-      progress: Boolean(file?.progress && file.progress < 100),
-      progressValue: file?.progress,
     }),
     [file]
   );

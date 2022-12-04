@@ -22,8 +22,9 @@ const DropBox = styled(Box)(({ theme }) => ({
 
 function Dropzone({
   withThumbnail = false,
-  maxFiles = 2,
+  maxFiles = 1,
   fileSize = 1 * 1000 * 1000,
+  accept = ["image/*"],
 }) {
   const [files, setFiles] = useState([]);
 
@@ -114,13 +115,12 @@ function Dropzone({
     [maxFiles, fileSize]
   );
 
-  console.log(rejectedFiles);
-
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles,
     multiple: maxFiles > 1,
     onDrop,
     maxSize: fileSize,
+    accept: [accept],
     onFileDialogOpen: () => setFailReason(null),
   });
 
