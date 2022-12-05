@@ -12,7 +12,13 @@ import {
   uploadBytes,
   uploadBytesResumable,
 } from "firebase/storage";
-import { getFirestore, addDoc, doc, collection } from "firebase/firestore";
+import {
+  getFirestore,
+  addDoc,
+  doc,
+  collection,
+  Timestamp,
+} from "firebase/firestore";
 let instance;
 
 // Your web app's Firebase configuration
@@ -136,7 +142,8 @@ class Firebase {
   // For adding a document to a firebase collection
   addDocument = ({ collectionName, data }) => {
     if (!collectionName) throw new Error("No collection name provided");
-
+    data.createdAt = Timestamp.now();
+    data.lastUpdatedAt = Timestamp.now();
     const collectionRef = collection(this.fireStoreDB, collectionName);
     return addDoc(collectionRef, data);
   };
