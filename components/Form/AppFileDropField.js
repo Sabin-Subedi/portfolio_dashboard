@@ -19,6 +19,11 @@ function AppFileDropField({
   required,
   helpText,
   minRows = 8,
+  uploadFolder,
+  withThumbnail,
+  maxFiles,
+  fileSize,
+  accept,
   ...otherProps
 }) {
   const { handleChange, handleBlur, values, setFieldValue, errors, touched } =
@@ -42,7 +47,13 @@ function AppFileDropField({
           {label}
         </Typography>
       )}
-      <Dropzone />
+      <Dropzone
+        uploadFolder={uploadFolder}
+        withThumbnail={withThumbnail}
+        maxFiles={maxFiles}
+        fileSize={fileSize}
+        accept={accept}
+      />
       <FormHelperText id={`${name}-help-text`}>
         {touched[name] && errors[name] ? errors[name] : helpText}
       </FormHelperText>

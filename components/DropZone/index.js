@@ -25,6 +25,7 @@ function Dropzone({
   maxFiles = 1,
   fileSize = 1 * 1000 * 1000,
   accept = ["image/*"],
+  uploadFolder = "default",
 }) {
   const [files, setFiles] = useState([]);
 
@@ -69,11 +70,11 @@ function Dropzone({
         try {
           file.key = uuidv4();
           file.uploading = true;
+          file.uploadFolder = uploadFolder;
           setFiles((prev) => [...prev, file]);
 
           await firebase.uploadFileBlob({
             file,
-            folder: "projects",
             onUploading: (progress) => {
               const nFile = file;
               nFile.progress = progress;
@@ -112,7 +113,7 @@ function Dropzone({
         }
       });
     },
-    [maxFiles, fileSize]
+    [maxFiles, fileSize, uploadFolder]
   );
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -124,6 +125,10 @@ function Dropzone({
     onFileDialogOpen: () => setFailReason(null),
   });
 
+  const removeFileFromFirebase = (file) => {
+    firebase.deleteFile(file);
+  };
+
   const selectedFiles = useMemo(
     () =>
       files.map((file) =>
@@ -132,7 +137,10 @@ function Dropzone({
             file={file}
             key={file.key}
             onRemove={() =>
-              setFiles((prev) => prev.filter((fi) => file.key !== fi.key))
+              setFiles((prev) => {
+                prev.filter((fi) => file.key !== fi.key);
+                removeFileFromFirebase(file);
+              })
             }
           />
         ) : (
@@ -140,7 +148,10 @@ function Dropzone({
             file={file}
             key={file.key}
             onRemove={() =>
-              setFiles((prev) => prev.filter((fi) => file.key !== fi.key))
+              setFiles((prev) => {
+                prev.filter((fi) => file.key !== fi.key);
+                removeFileFromFirebase(file);
+              })
             }
           />
         )
@@ -157,7 +168,10 @@ function Dropzone({
           fileSize={fileSize}
           error={file.errors && file.errors[0]}
           onRemove={() =>
-            setRejectedFiles((prev) => prev.filter((fi) => file.key !== fi.key))
+            setRejectedFiles((prev) => {
+              prev.filter((fi) => file.key !== fi.key);
+              removeFileFromFirebase(file);
+            })
           }
         />
       )),
@@ -231,7 +245,13 @@ function Dropzone({
             </Box>
           )}
           {files.length === 1 && maxFiles == 1 && (
-            <SingleImageView file={files[0]} onRemove={() => setFiles([])} />
+            <SingleImageView
+              file={files[0]}
+              onRemove={() => {
+                setFiles([]);
+                removeFileFromFirebase(files[0]);
+              }}
+            />
           )}
         </DropBox>
       )}

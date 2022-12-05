@@ -1,18 +1,17 @@
-import { Grid, Paper, Tooltip, Typography } from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 import React from "react";
-import AppForm from "../../components/Form/AppForm";
 import * as yup from "yup";
+import AppForm from "../../components/Form/AppForm";
 import AppInputField from "../../components/Form/AppInputField";
 
-import AppQuillField from "../../components/Form/AppQuillField";
-import Dropzone from "../../components/DropZone";
 import AppFileDropField from "../../components/Form/AppFileDropField";
-import AppSwitchField from "../../components/Form/AppSwitch";
-import AppMutltiSelectField from "../../components/Form/AppMultiSelect";
 import AppFormButton from "../../components/Form/AppFormButton";
+import AppMutltiSelectField from "../../components/Form/AppMultiSelect";
+import AppQuillField from "../../components/Form/AppQuillField";
+import AppSwitchField from "../../components/Form/AppSwitch";
 
 const initialValues = {
-  title: "sds",
+  title: "",
   description: "",
   is_featured: false,
   is_published: false,
@@ -73,6 +72,7 @@ function ProjectCreatePage() {
 
               <AppFileDropField
                 name="project_image"
+                uploadFolder="projects"
                 label="Project Cover Image"
               />
             </Paper>

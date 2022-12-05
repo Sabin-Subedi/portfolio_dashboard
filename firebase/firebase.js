@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import {
+  deleteObject,
   getDownloadURL,
   getStorage,
   ref,
@@ -36,6 +37,7 @@ class Firebase {
       projects: ref(this.storage, "/projects"),
       skills: ref(this.storage, "/skills"),
       resume: ref(this.storage, "/resume"),
+      default: ref(this.storage),
     };
     instance = this;
   }
@@ -55,20 +57,16 @@ class Firebase {
 
   uploadFileBlob = ({
     file,
-    folder,
     metadata,
     onUploading,
     onUploadError,
     onUpload,
   }) => {
-    console.log(Object.keys(this.storageFolderRefs).includes(folder));
     if (!file) throw new Error("No file provided");
-    if (
-      folder === null ||
-      Object.keys(this.storageFolderRefs).includes(folder)
-    ) {
-      const fileName = `${uuidv4()}.${file.name.split(".").pop()}`;
-      const imgRef = ref(this.storageFolderRefs[folder], fileName);
+    !file.uploadFolder && (file.uploadFolder = "default");
+    if (Object.keys(this.storageFolderRefs).includes(file.uploadFolder)) {
+      const fileName = `${file.key}.${file.name.split(".").pop()}`;
+      const imgRef = ref(this.storageFolderRefs[file.uploadFolder], fileName);
       const uploadTask = uploadBytesResumable(imgRef, file, metadata);
 
       uploadTask.on(
@@ -96,6 +94,27 @@ class Firebase {
 
   downloadFileUrl = (uploadRef) => {
     return getDownloadURL(uploadRef);
+  };
+
+  deleteFile = (file) => {
+    !file.uploadFolder && (file.uploadFolder = "default");
+
+    const fileName = `${file.key}.${file.name.split(".").pop()}`;
+    console.log(fileName);
+    if (file.uploadFolder) {
+      const deleteFileRef = ref(
+        this.storageFolderRefs[file.uploadFolder],
+        fileName
+      );
+      return deleteObject(deleteFileRef)
+        .then(() => {
+          console.log("File deleted successfully");
+        })
+        .catch((error) => {
+          console.log("File deletion failed");
+        });
+    }
+    throw new Error("Invalid folder or file name");
   };
 
   signInUser = ({ email, password }) =>
