@@ -11,6 +11,7 @@ import "react-quill/dist/quill.snow.css";
 import "../styles/globals.css";
 import appTheme from "../theme/appTheme";
 import { defaultLayout } from "./layout/default";
+import AppToast from "../components/AppToast";
 
 const WithOauthState = dynamic(() => import("../hoc/withOauthState"), {
   ssr: false,
@@ -25,6 +26,7 @@ function MyApp({ Component, pageProps }) {
     <>
       <AppContextProvider>
         <ThemeProvider theme={appTheme}>
+          <AppToast />
           <WithOauthState>{comp}</WithOauthState>
         </ThemeProvider>
       </AppContextProvider>
