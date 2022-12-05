@@ -7,12 +7,12 @@ function useFirebase({ firebaseFunc }) {
   const [data, setData] = useState(null);
 
   const fire = useCallback(
-    async (values) => {
+    async (...values) => {
       setError({ code: null, message: null });
       setData(null);
       setLoading(true);
       try {
-        const response = await firebaseFunc(values);
+        const response = await firebaseFunc(...values);
         setData(response);
       } catch (error) {
         console.log(error.name);

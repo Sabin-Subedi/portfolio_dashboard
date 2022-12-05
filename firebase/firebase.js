@@ -12,7 +12,7 @@ import {
   uploadBytes,
   uploadBytesResumable,
 } from "firebase/storage";
-import { v4 as uuidv4 } from "uuid";
+import { addDoc, doc, getFirestore } from "firebase/firestore";
 let instance;
 
 // Your web app's Firebase configuration
@@ -33,6 +33,7 @@ class Firebase {
     this.app = initializeApp(config);
     this.auth = getAuth(this.app);
     this.storage = getStorage(this.app);
+    this.fireStoreDB = getFireStore(this.app);
     this.storageFolderRefs = {
       projects: ref(this.storage, "/projects"),
       skills: ref(this.storage, "/skills"),
@@ -55,6 +56,18 @@ class Firebase {
 
   getCurrentUser = () => this.auth.currentUser;
 
+  signInUser = ({ email, password }) =>
+    signInWithEmailAndPassword(this.auth, email, password);
+
+  doSignOut = () => this.auth.signOut();
+
+  doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
+
+  doPasswordUpdate = (password) =>
+    this.auth.currentUser.updatePassword(password);
+
+  // *** User API ***
+  // For uploading a file to a firebase storage folder
   uploadFileBlob = ({
     file,
     metadata,
@@ -92,10 +105,12 @@ class Firebase {
     throw new Error("Invalid folder name");
   };
 
+  // For downloading a file from a firebase storage folder
   downloadFileUrl = (uploadRef) => {
     return getDownloadURL(uploadRef);
   };
 
+  // For deleting a file from a firebase storage folder
   deleteFile = (file) => {
     !file.uploadFolder && (file.uploadFolder = "default");
 
@@ -117,15 +132,12 @@ class Firebase {
     throw new Error("Invalid folder or file name");
   };
 
-  signInUser = ({ email, password }) =>
-    signInWithEmailAndPassword(this.auth, email, password);
-
-  doSignOut = () => this.auth.signOut();
-
-  doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
-
-  doPasswordUpdate = (password) =>
-    this.auth.currentUser.updatePassword(password);
+  // *** Firestore API ***
+  // For adding a document to a firebase collection
+  addDocument = ({ collectionName, data }) => {
+    const collectionRef = collectionName(this.fireStoreDB, collectionName);
+    return addDoc(collectionRef, data);
+  };
 }
 
 export const firebase = new Firebase(firebaseConfig);
