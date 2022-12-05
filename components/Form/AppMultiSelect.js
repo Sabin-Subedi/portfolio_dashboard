@@ -17,8 +17,6 @@ export default function AppMutltiSelectField({
   const { touched, values, errors, setFieldValue } = useFormikContext();
   const [value, setValue] = React.useState([]);
 
-  console.log(errors[name]);
-
   const handleClick = useCallback(
     (e, newValue) => {
       if (JSON.stringify(value) === JSON.stringify(newValue)) {

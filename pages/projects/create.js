@@ -9,6 +9,9 @@ import AppFormButton from "../../components/Form/AppFormButton";
 import AppMutltiSelectField from "../../components/Form/AppMultiSelect";
 import AppQuillField from "../../components/Form/AppQuillField";
 import AppSwitchField from "../../components/Form/AppSwitch";
+import useFirebase from "../../hooks/useFirebase";
+import { firebase } from "../../firebase/firebase";
+import { useAppContext } from "../../context";
 
 const initialValues = {
   title: "",
@@ -25,8 +28,8 @@ const initialValues = {
 const validationSchema = yup.object().shape({
   title: yup.string().required().label("Title"),
   description: yup.string().required().min(100).label("Description"),
-  live_project_link: yup.string().url().required().label("Live Project Link"),
-  github_link: yup.string().url().required().label("Github Link"),
+  live_project_link: yup.string().url().label("Live Project Link"),
+  github_link: yup.string().url().label("Github Link"),
   order: yup.number().label("Order"),
   tools: yup
     .array()
@@ -37,6 +40,10 @@ const validationSchema = yup.object().shape({
 });
 
 function ProjectCreatePage() {
+  const [{ user }] = useAppContext();
+  const { loading, fire } = useFirebase({
+    firebaseFunc: firebase.addDocument,
+  });
   return (
     <>
       <Typography mb={5} fontWeight={500} variant="h3">
@@ -45,6 +52,24 @@ function ProjectCreatePage() {
       <AppForm
         initialValues={initialValues}
         validationSchema={validationSchema}
+        onSubmit={async (values, { resetForm, setSubmitting }) => {
+          try {
+            setSubmitting(true);
+            if (!user && !user.uid) {
+              throw new Error("User not logged in.");
+            }
+            const { uid } = user;
+            const docRef = await fire({
+              collectionName: `projects/${uid}/project_list`,
+              data: values,
+            });
+            console.log(docRef);
+          } catch (err) {
+            console.log(err);
+          } finally {
+            setSubmitting(false);
+          }
+        }}
       >
         <Grid container spacing={3}>
           <Grid mb={5} item xs={8}>

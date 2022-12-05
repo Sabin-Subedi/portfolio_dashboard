@@ -1,5 +1,4 @@
-import { FirebaseError } from "firebase/app";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 
 function useFirebase({ firebaseFunc }) {
   const [loading, setLoading] = useState(false);
@@ -15,7 +14,7 @@ function useFirebase({ firebaseFunc }) {
         const response = await firebaseFunc(...values);
         setData(response);
       } catch (error) {
-        console.log(error.name);
+        console.log(error);
         setError({ code: error.code, message: "Invalid Credentials" });
       } finally {
         setLoading(false);

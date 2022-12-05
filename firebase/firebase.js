@@ -12,7 +12,7 @@ import {
   uploadBytes,
   uploadBytesResumable,
 } from "firebase/storage";
-import { addDoc, doc, getFirestore } from "firebase/firestore";
+import { getFirestore, addDoc, doc, collection } from "firebase/firestore";
 let instance;
 
 // Your web app's Firebase configuration
@@ -33,7 +33,7 @@ class Firebase {
     this.app = initializeApp(config);
     this.auth = getAuth(this.app);
     this.storage = getStorage(this.app);
-    this.fireStoreDB = getFireStore(this.app);
+    this.fireStoreDB = getFirestore(this.app);
     this.storageFolderRefs = {
       projects: ref(this.storage, "/projects"),
       skills: ref(this.storage, "/skills"),
@@ -135,7 +135,9 @@ class Firebase {
   // *** Firestore API ***
   // For adding a document to a firebase collection
   addDocument = ({ collectionName, data }) => {
-    const collectionRef = collectionName(this.fireStoreDB, collectionName);
+    if (!collectionName) throw new Error("No collection name provided");
+
+    const collectionRef = collection(this.fireStoreDB, collectionName);
     return addDoc(collectionRef, data);
   };
 }
