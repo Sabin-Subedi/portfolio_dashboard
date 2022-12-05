@@ -5,6 +5,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FiX } from "react-icons/fi";
 import { v4 as uuidv4 } from "uuid";
+import { FILE_UPLOAD_OPERATION } from "../../constants/FileUploadConstants";
 import { firebase } from "../../firebase/firebase";
 import useFirebaseStorage from "../../hooks/useFirebaseStorage";
 import FileDetailView from "./FileDetailView";
@@ -26,6 +27,9 @@ function Dropzone({
   fileSize = 1 * 1000 * 1000,
   accept = ["image/*"],
   uploadFolder = "default",
+  handleBlur,
+  handleFile,
+  error = false,
 }) {
   const [files, setFiles] = useState([]);
 
@@ -35,6 +39,7 @@ function Dropzone({
     (acceptedFiles, failedFiles) => {
       setFailReason();
 
+      handleBlur && handleBlur();
       if (failedFiles.length > 0 && maxFiles === 1) {
         if (failedFiles[0]?.errors[0]?.code === "file-too-large") {
           setFailReason(
@@ -106,6 +111,7 @@ function Dropzone({
                 ...prev.filter((f) => f.key !== file.key),
                 nFile,
               ]);
+              handleFile && handleFile(url, FILE_UPLOAD_OPERATION["add_file"]);
             },
           });
         } catch (err) {
@@ -113,7 +119,7 @@ function Dropzone({
         }
       });
     },
-    [maxFiles, fileSize, uploadFolder]
+    [maxFiles, fileSize, uploadFolder, handleFile, handleBlur]
   );
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -125,9 +131,14 @@ function Dropzone({
     onFileDialogOpen: () => setFailReason(null),
   });
 
-  const removeFileFromFirebase = (file) => {
-    firebase.deleteFile(file);
-  };
+  const removeFileFromFirebase = useCallback(
+    (file) => {
+      handleFile &&
+        handleFile(file.imageUrl, FILE_UPLOAD_OPERATION["remove_file"]);
+      firebase.deleteFile(file);
+    },
+    [handleFile]
+  );
 
   const selectedFiles = useMemo(
     () =>
@@ -156,7 +167,7 @@ function Dropzone({
           />
         )
       ),
-    [files, withThumbnail]
+    [files, withThumbnail, removeFileFromFirebase]
   );
 
   const failedFiles = useMemo(
@@ -175,7 +186,7 @@ function Dropzone({
           }
         />
       )),
-    [rejectedFiles, fileSize]
+    [rejectedFiles, fileSize, removeFileFromFirebase]
   );
 
   return (
@@ -185,7 +196,7 @@ function Dropzone({
           border={1}
           sx={{
             borderStyle: "dashed",
-            borderColor: "grey.400",
+            borderColor: error ? "error.dark" : "grey.400",
             backgroundColor: "grey.200",
           }}
         >
@@ -216,11 +227,11 @@ function Dropzone({
             >
               <input {...getInputProps()} />
               <Box
-                mr={3}
+                mr={5}
                 sx={{
                   position: "relative",
-                  minWidth: "12rem",
-                  minHeight: "10rem",
+                  minWidth: "14rem",
+                  minHeight: "12rem",
                 }}
               >
                 <Image src="/file_upload.svg" layout="fill" alt="File Upload" />

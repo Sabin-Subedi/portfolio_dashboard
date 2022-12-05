@@ -100,7 +100,7 @@ class Firebase {
     !file.uploadFolder && (file.uploadFolder = "default");
 
     const fileName = `${file.key}.${file.name.split(".").pop()}`;
-    console.log(fileName);
+
     if (file.uploadFolder) {
       const deleteFileRef = ref(
         this.storageFolderRefs[file.uploadFolder],
