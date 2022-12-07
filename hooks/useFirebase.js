@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
+import toast from "react-hot-toast";
 
-function useFirebase({ firebaseFunc }) {
+function useFirebase({ firebaseFunc, toastError = false }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({ code: null, message: null });
   const [data, setData] = useState(null);
@@ -14,13 +15,13 @@ function useFirebase({ firebaseFunc }) {
         const response = await firebaseFunc(...values);
         setData(response);
       } catch (error) {
-        console.log(error);
-        setError({ code: error.code, message: "Invalid Credentials" });
+        toastError && toast.error(error.message);
+        setError({ code: error.code, message: error.message });
       } finally {
         setLoading(false);
       }
     },
-    [firebaseFunc]
+    [firebaseFunc, toastError]
   );
 
   return { loading, error, data, fire };

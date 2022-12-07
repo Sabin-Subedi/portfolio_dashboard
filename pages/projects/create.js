@@ -12,6 +12,9 @@ import AppSwitchField from "../../components/Form/AppSwitch";
 import useFirebase from "../../hooks/useFirebase";
 import { firebase } from "../../firebase/firebase";
 import { useAppContext } from "../../context";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
+import BreadCrumb from "../../components/BreadCrumb";
 
 const initialValues = {
   title: "",
@@ -41,14 +44,29 @@ const validationSchema = yup.object().shape({
 
 function ProjectCreatePage() {
   const [{ user }] = useAppContext();
+  const router = useRouter();
   const { loading, fire } = useFirebase({
     firebaseFunc: firebase.addDocument,
+    toastError: true,
   });
   return (
     <>
-      <Typography mb={5} fontWeight={500} variant="h3">
+      <Typography fontWeight={500} variant="h3">
         Create a new project
       </Typography>
+      <BreadCrumb
+        mb={4}
+        breadcrumbs={[
+          {
+            label: "Project",
+            href: "/projects/",
+          },
+          {
+            label: "Create",
+            href: "/create",
+          },
+        ]}
+      />
       <AppForm
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -63,7 +81,8 @@ function ProjectCreatePage() {
               collectionName: `projects/${uid}/project_list`,
               data: values,
             });
-            console.log(docRef);
+            toast.success("Post Created Successfully.");
+            router.push("/projects/");
           } catch (err) {
             console.log(err);
           } finally {

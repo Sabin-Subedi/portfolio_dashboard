@@ -1,11 +1,19 @@
+import { IconButton, Typography } from "@mui/material";
 import React from "react";
 
 import { toast, Toaster, ToastBar } from "react-hot-toast";
 import {
-  BsExclamationTriangleFill,
+  BsExclamationCircleFill,
   BsFillCheckCircleFill,
   BsInfoCircleFill,
 } from "react-icons/bs";
+import { FiX } from "react-icons/fi";
+import { HiExclamationTriangle } from "react-icons/hi2";
+import ToastIcon from "./ToastIcon";
+
+const toastConfig = {
+  duration: 5000,
+};
 
 function AppToast({ position = "top-right" }) {
   return (
@@ -13,15 +21,20 @@ function AppToast({ position = "top-right" }) {
       position={position}
       toastOptions={{
         success: {
+          duration: toastConfig.duration,
           icon: <BsFillCheckCircleFill />,
         },
         info: {
-          duration: 5000,
+          duration: toastConfig.duration,
           icon: <BsInfoCircleFill />,
         },
         warning: {
-          duration: 5000,
-          icon: <BsExclamationTriangleFill />,
+          duration: toastConfig.duration,
+          icon: <HiExclamationTriangle />,
+        },
+        error: {
+          duration: toastConfig.duration,
+          icon: <BsExclamationCircleFill />,
         },
       }}
     >
@@ -29,11 +42,18 @@ function AppToast({ position = "top-right" }) {
         <ToastBar toast={t}>
           {({ icon, message }) => (
             <>
-              {console.log(t.type)}
-              {icon}
-              {message}
+              <ToastIcon type={t.type} icon={icon} />
+              <Typography variant="body1" color="grey.800">
+                {message}
+              </Typography>
               {t.type !== "loading" && (
-                <button onClick={() => toast.dismiss(t.id)}>X</button>
+                <IconButton
+                  onClick={() => toast.dismiss(t.id)}
+                  size="small"
+                  aria-label="close"
+                >
+                  <FiX />
+                </IconButton>
               )}
             </>
           )}
