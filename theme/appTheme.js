@@ -55,6 +55,11 @@ const appTheme = createTheme({
       800: "#212B36",
       900: "#161C24",
     },
+    black: {
+      light: "#212B36",
+      main: "#161C24",
+      dark: "#0D1117",
+    },
   },
   typography: {
     fontFamily: '"Public Sans","Roboto", sans-serif',

@@ -18,6 +18,7 @@ import useFirebase from "../../hooks/useFirebase";
 import { useAppContext } from "../../context";
 import { LOGIN_USER } from "../../context/actions";
 import { useRouter } from "next/router";
+import AppPasswordField from "../../components/Form/AppPasswordField";
 
 const validationSchema = yup.object().shape({
   email: yup.string().email().required().label("Email"),
@@ -30,18 +31,21 @@ const initialValues = {
 };
 
 function LoginPage({ firebase }) {
+  const router = useRouter();
   const { fire, data, error } = useFirebase({
     firebaseFunc: firebase.signInUser,
+    customErrorMessage: "Invalid email or password.",
+    onSuccess: () => {
+      router.push("/");
+    },
   });
   const [state, dispatch] = useAppContext();
-  const router = useRouter();
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     setSubmitting(true);
     await fire(values);
     data && dispatch({ type: LOGIN_USER, payload: data.user });
     setSubmitting(false);
-    router.push("/");
   };
 
   useLayoutEffect(() => {
@@ -72,7 +76,7 @@ function LoginPage({ firebase }) {
           name="email"
           type="email"
         />
-        <AppInputField
+        <AppPasswordField
           fullWidth={true}
           label="Password"
           name="password"
@@ -87,7 +91,9 @@ function LoginPage({ firebase }) {
             {error.message}
           </Alert>
         )}
-        <AppFormButton>Login</AppFormButton>
+        <AppFormButton color="primary" sx={{ borderRadius: "0.5rem" }}>
+          Login
+        </AppFormButton>
       </AppForm>
     </Box>
   );

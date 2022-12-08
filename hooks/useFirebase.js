@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 function useFirebase({
   firebaseFunc,
   toastError = false,
-  customErrorMessage,
+  customErrorMessage = null,
   onSuccess,
   onFailure,
   onDone,
@@ -26,7 +26,8 @@ function useFirebase({
         onSuccess && onSuccess(response);
         setSuccess(true);
       } catch (error) {
-        errorMessage = customErrorMessage || error.message;
+        const errorMessage = customErrorMessage || error.message;
+
         toastError && toast.error(errorMessage);
         onFailure && onFailure(error);
         setError({ code: error.code, message: errorMessage });
