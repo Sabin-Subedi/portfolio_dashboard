@@ -39,7 +39,6 @@ function Dropzone({
     (acceptedFiles, failedFiles) => {
       setFailReason();
 
-      handleBlur && handleBlur();
       if (failedFiles.length > 0 && maxFiles === 1) {
         if (failedFiles[0]?.errors[0]?.code === "file-too-large") {
           setFailReason(
@@ -53,8 +52,7 @@ function Dropzone({
         }
         setFailReason(failedFiles[0]?.errors[0]?.message);
         return;
-      }
-      if (
+      } else if (
         failedFiles.length > 0 &&
         failedFiles[0]?.errors[0]?.code === "too-many-files"
       ) {
@@ -118,6 +116,8 @@ function Dropzone({
           console.log(err);
         }
       });
+
+      handleBlur && handleBlur();
     },
     [maxFiles, fileSize, uploadFolder, handleFile, handleBlur]
   );

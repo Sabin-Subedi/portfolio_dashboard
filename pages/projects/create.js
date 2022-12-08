@@ -82,7 +82,7 @@ function ProjectCreatePage() {
               data: values,
             });
             toast.success("Post Created Successfully.");
-            router.push("/projects/");
+            router.push("/projects/lists");
           } catch (err) {
             console.log(err);
           } finally {

@@ -1,3 +1,4 @@
+import { debounce } from "@mui/material";
 import dynamic from "next/dynamic";
 import React from "react";
 
@@ -58,10 +59,8 @@ class Editor extends React.Component {
   }
 
   handleChange(html) {
-    this.setState({ editorHtml: html }, async (state) => {
-      console.log(this.state.editorHtml);
-      this.props.onChange && this.props.onChange(this.state.editorHtml);
-    });
+    this.setState({ editorHtml: html });
+    this.props.onChange && this.props.onChange(html);
   }
 
   handleThemeChange(newTheme) {
@@ -82,6 +81,7 @@ class Editor extends React.Component {
           formats={Editor.formats}
           bounds={".app"}
           placeholder={this.props.placeholder}
+          onBlur={this.props.onBlur}
         />
       </div>
     );

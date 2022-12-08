@@ -20,8 +20,15 @@ function AppQuillField({
   minRows = 8,
   ...otherProps
 }) {
-  const { handleChange, handleBlur, values, setFieldValue, errors, touched } =
-    useFormikContext();
+  const {
+    handleChange,
+    handleBlur,
+    values,
+    setFieldValue,
+    setFieldTouched,
+    errors,
+    touched,
+  } = useFormikContext();
   return (
     <FormControl
       sx={{ marginBottom: "1.2rem" }}
@@ -45,6 +52,7 @@ function AppQuillField({
         onChange={(value) => {
           setFieldValue(name, value);
         }}
+        onBlur={() => setFieldTouched(name, true)}
         error={touched[name] && errors[name]}
       />
       <FormHelperText id={`${name}-help-text`}>
