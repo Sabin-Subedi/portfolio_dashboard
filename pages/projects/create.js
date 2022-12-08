@@ -77,7 +77,7 @@ function ProjectCreatePage() {
               throw new Error("User not logged in.");
             }
             const { uid } = user;
-            const docRef = await fire({
+            await fire({
               collectionName: `projects/${uid}/project_list`,
               data: values,
             });
