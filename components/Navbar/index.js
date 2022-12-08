@@ -17,6 +17,7 @@ function Navbar() {
     onSuccess: () => {
       dispatch({ type: LOGOUT_USER });
       toast.success("Logged out successfully");
+      router.push("/login");
     },
   });
 
