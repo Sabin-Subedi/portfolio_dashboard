@@ -36,7 +36,8 @@ a {
 ::-webkit-scrollbar-button {
   display: none;
 }
-*/ .ql-container {
+
+ .ql-container {
   border-bottom-left-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
   font-family: Helvetica, Arial, sans-serif;
@@ -143,7 +144,7 @@ a {
     position: absolute;
     transform: scaleX(-1);
     /* background-color: #444; */
-    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) center center / cover no-repeat, url(/img/bg_overlay.jpg) !important;
+    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) center center / cover no-repeat, url('/img/bg_overlay.jpg') !important;
     background-repeat: no-repeat;
     background-position: center center;
 
