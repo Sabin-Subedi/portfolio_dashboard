@@ -21,7 +21,9 @@ function NavigationLinkTab({
   ...props
 }) {
   const router = useRouter();
-  const active = router.pathname.includes(link);
+
+  const active =
+    link === "/" ? router.route === link : router.pathname.includes(link);
 
   const [open, setOpen] = React.useState(active ? true : false);
 

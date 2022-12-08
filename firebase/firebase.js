@@ -3,6 +3,7 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import {
   deleteObject,
@@ -65,7 +66,7 @@ class Firebase {
   signInUser = ({ email, password }) =>
     signInWithEmailAndPassword(this.auth, email, password);
 
-  doSignOut = () => this.auth.signOut();
+  doSignOut = () => signOut(this.auth);
 
   doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
 

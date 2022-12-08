@@ -19,7 +19,7 @@ const menus = [
       {
         label: "Dashboard",
         icon: <MdSpeed />,
-        link: "/app",
+        link: "/",
       },
     ],
   },

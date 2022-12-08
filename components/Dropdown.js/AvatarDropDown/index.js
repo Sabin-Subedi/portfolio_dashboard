@@ -15,7 +15,7 @@ const CustomMenuItem = styled(MenuItem)`
   border-radius: 8px;
 `;
 
-function AvatarDropdown() {
+function AvatarDropdown({ logOut }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [{ user }] = useAppContext();
@@ -123,7 +123,7 @@ function AvatarDropdown() {
           <CustomMenuItem>Profile</CustomMenuItem>
           <CustomMenuItem>Settings</CustomMenuItem>
         </Box>
-        <Box px={1} pt={1} sx={{}}>
+        <Box px={1} pt={1} onClick={() => logOut()}>
           <CustomMenuItem>Logout</CustomMenuItem>
         </Box>
       </Menu>
