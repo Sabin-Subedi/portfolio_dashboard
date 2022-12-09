@@ -18,6 +18,7 @@ import {
   Typography,
   alpha,
   tableCellClasses,
+  tableRowClasses,
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
 import { FiFilter, FiTrash2 } from "react-icons/fi";
@@ -40,6 +41,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     padding: "0.8rem",
     paddingRight: "2rem",
     border: "none",
+    borderBottom: "none",
   },
 
   [`&.${tableCellClasses.paddingCheckbox}`]: {
@@ -49,10 +51,19 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
     border: "none",
+    borderBottom: "none",
     padding: "0.8rem",
     paddingRight: "2rem",
   },
 }));
+
+// const StyledTableRow = styled(TableRow)(({ theme }) => ({
+//   [tableRowClasses.root]: {
+//     "&.Mui-selected": {
+//         bor
+//     },
+//   },
+// }));
 
 const rows = [
   createData("Cupcake", 305, 3.7, 67, 4.3),
@@ -150,6 +161,7 @@ function EnhancedTableHead(props) {
     return (
       <StyledTableCell
         sx={{
+          padding: numSelected > 0 ? 0 : "0.8rem",
           bgcolor: "primary.lighter",
         }}
         padding="checkbox"
@@ -171,7 +183,15 @@ function EnhancedTableHead(props) {
     <TableRow>
       {renderCheckBox}
       <StyledTableCell
-        sx={{ padding: 0, border: "none" }}
+        sx={{
+          padding: 0,
+          border: "none",
+          ...(numSelected > 0 && {
+            bgcolor: (theme) => theme.palette.primary.lighter,
+            color: "primary.main",
+            border: "none",
+          }),
+        }}
         colSpan={headCells.length}
       >
         <EnhancedTableToolbar numSelected={numSelected} />
@@ -223,12 +243,11 @@ function EnhancedTableToolbar(props) {
     <Toolbar
       sx={{
         width: "100%",
+        height: "100%",
         p: "0.8rem",
+        pl: 0,
         border: "none",
-        ...(numSelected > 0 && {
-          bgcolor: (theme) => theme.palette.primary.lighter,
-          color: "primary.main",
-        }),
+        borderBottom: "none",
       }}
     >
       <Typography
@@ -305,10 +324,6 @@ export default function AppTable() {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -316,8 +331,15 @@ export default function AppTable() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
-    <Box sx={{ width: "100%", boxShadow: (theme) => theme.shadows[24] }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
+    <Box
+      sx={{
+        width: "100%",
+        boxShadow: (theme) => theme.shadows[20],
+        borderRadius: "0.5rem",
+        overflow: "hidden",
+      }}
+    >
+      <Paper sx={{ width: "100%", height: "100%" }}>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -350,6 +372,14 @@ export default function AppTable() {
                       tabIndex={-1}
                       key={row.name}
                       selected={isItemSelected}
+                      //   sx={
+                      //     {
+                      //       "&.Mui-selected": {
+                      //         bgcolor: "grey.200",
+
+                      //       },
+                      //     }
+                      //   }
                     >
                       <StyledTableCell padding="checkbox">
                         <Checkbox
@@ -361,6 +391,7 @@ export default function AppTable() {
                         />
                       </StyledTableCell>
                       <StyledTableCell
+                        c
                         component="th"
                         id={labelId}
                         scope="row"
@@ -393,15 +424,24 @@ export default function AppTable() {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        <Box
+          sx={{
+            borderTop: 1,
+            borderColor: "grey.300",
+            py: 1,
+          }}
+        >
+          <TablePagination
+            padding={4}
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Box>
       </Paper>
     </Box>
   );
