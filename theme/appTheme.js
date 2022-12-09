@@ -201,6 +201,13 @@ const appTheme = createTheme({
         },
       },
     },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          borderRadius: "1rem",
+        },
+      },
+    },
   },
 });
 
