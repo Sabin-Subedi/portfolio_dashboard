@@ -244,8 +244,8 @@ function EnhancedTableToolbar(props) {
       sx={{
         width: "100%",
         height: "100%",
-        p: "0.8rem",
-        pl: 0,
+        paddingLeft: "0",
+        p: "0.8rem 0.8rem 0.8rem 0rem",
         border: "none",
         borderBottom: "none",
       }}
@@ -260,7 +260,7 @@ function EnhancedTableToolbar(props) {
       </Typography>
 
       <Tooltip title="Delete">
-        <IconButton>
+        <IconButton color="inherit" size="small" sx={{ padding: 1 }}>
           <FiTrash2 />
         </IconButton>
       </Tooltip>
@@ -278,7 +278,7 @@ export default function AppTable() {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -335,7 +335,7 @@ export default function AppTable() {
       sx={{
         width: "100%",
         boxShadow: (theme) => theme.shadows[20],
-        borderRadius: "0.5rem",
+        borderRadius: "0.75rem",
         overflow: "hidden",
       }}
     >

@@ -147,6 +147,9 @@ const appTheme = createTheme({
           lineHeight: "22px",
         },
       },
+      defaultProps: {
+        variant: "contained",
+      },
     },
     MuiSwitch: {
       styleOverrides: {

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 function useFirebase({
@@ -8,6 +8,8 @@ function useFirebase({
   onSuccess,
   onFailure,
   onDone,
+  autoFire = false,
+  fireValues,
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({ code: null, message: null });
@@ -38,6 +40,12 @@ function useFirebase({
     },
     [firebaseFunc, toastError, customErrorMessage, onSuccess, onFailure, onDone]
   );
+
+  useEffect(() => {
+    if (autoFire) {
+      fire(fireValues);
+    }
+  }, [autoFire, fire, fireValues]);
 
   return { loading, error, data, fire, success };
 }

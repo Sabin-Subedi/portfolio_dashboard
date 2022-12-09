@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import React from "react";
 import * as yup from "yup";
 import AppForm from "../../components/Form/AppForm";
@@ -6,12 +6,12 @@ import AppInputField from "../../components/Form/AppInputField";
 
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
-import BreadCrumb from "../../components/BreadCrumb";
 import AppFileDropField from "../../components/Form/AppFileDropField";
 import AppFormButton from "../../components/Form/AppFormButton";
 import AppMutltiSelectField from "../../components/Form/AppMultiSelect";
 import AppQuillField from "../../components/Form/AppQuillField";
 import AppSwitchField from "../../components/Form/AppSwitch";
+import PageHeader from "../../components/PageHeader";
 import { useAppContext } from "../../context";
 import { firebase } from "../../firebase/firebase";
 import useFirebase from "../../hooks/useFirebase";
@@ -51,15 +51,12 @@ function ProjectCreatePage() {
   });
   return (
     <>
-      <Typography fontWeight={500} variant="h3">
-        Create a new project
-      </Typography>
-      <BreadCrumb
-        mb={4}
+      <PageHeader
+        title="Create a new project"
         breadcrumbs={[
           {
             label: "Project",
-            href: "/projects/",
+            href: "/projects/lists",
           },
           {
             label: "Create",
@@ -67,6 +64,7 @@ function ProjectCreatePage() {
           },
         ]}
       />
+
       <AppForm
         initialValues={initialValues}
         validationSchema={validationSchema}
