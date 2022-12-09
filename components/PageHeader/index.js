@@ -8,7 +8,6 @@ function PageHeader({ title, breadcrumbs = [], extraComp }) {
       mb={4}
       sx={{
         display: "flex",
-
         justifyContent: "space-between",
         alignItems: "center",
       }}

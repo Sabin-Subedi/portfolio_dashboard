@@ -19,6 +19,8 @@ import {
   doc,
   collection,
   Timestamp,
+  query,
+  getDocs,
 } from "firebase/firestore";
 let instance;
 
@@ -147,6 +149,37 @@ class Firebase {
     data.lastUpdatedAt = Timestamp.now();
     const collectionRef = collection(this.fireStoreDB, collectionName);
     return addDoc(collectionRef, data);
+  };
+
+  getDocument = ({ collectionRef, query = [] }) => {
+    let q;
+    if (query.length > 0 && collectionRef) {
+      q = query(collectionRef, ...query);
+    }
+    return new Promise((resolve, reject) => {
+      getDocs(q ? q : collectionRef)
+        .then((querySnapshot) => {
+          const data = [];
+          querySnapshot.forEach((doc) => {
+            if (!doc) {
+              reject("Couldn't Fetch the data");
+            }
+            data.push(doc.data());
+          });
+          resolve(data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  };
+
+  getCollection = (collectionName) => {
+    return collection(this.fireStoreDB, collectionName);
+  };
+
+  getDocRef = (collectionName, docName) => {
+    return doc(this.fireStoreDB, collectionName, docName);
   };
 }
 

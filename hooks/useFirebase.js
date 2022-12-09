@@ -38,14 +38,9 @@ function useFirebase({
         onDone && onDone();
       }
     },
-    [firebaseFunc, toastError, customErrorMessage, onSuccess, onFailure, onDone]
-  );
 
-  useEffect(() => {
-    if (autoFire) {
-      fire(fireValues);
-    }
-  }, [autoFire, fire, fireValues]);
+    [firebaseFunc, toastError, customErrorMessage, onSuccess, onDone, onFailure]
+  );
 
   return { loading, error, data, fire, success };
 }

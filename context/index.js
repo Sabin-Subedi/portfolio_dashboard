@@ -4,6 +4,7 @@ import reducer from "./reducer";
 const store = {
   user: null,
   isLoggedIn: null,
+  projects: [],
 };
 
 export const AppContext = createContext();
