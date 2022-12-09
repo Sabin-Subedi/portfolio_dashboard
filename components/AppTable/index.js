@@ -39,9 +39,12 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     fontWeight: 600,
     padding: "0.8rem",
     paddingRight: "2rem",
+    border: "none",
   },
+
   [`&.${tableCellClasses.paddingCheckbox}`]: {
     padding: "0.8rem",
+    border: "none",
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -167,7 +170,10 @@ function EnhancedTableHead(props) {
   return numSelected > 0 ? (
     <TableRow>
       {renderCheckBox}
-      <StyledTableCell sx={{ padding: 0 }} colSpan={headCells.length}>
+      <StyledTableCell
+        sx={{ padding: 0, border: "none" }}
+        colSpan={headCells.length}
+      >
         <EnhancedTableToolbar numSelected={numSelected} />
       </StyledTableCell>
     </TableRow>
@@ -218,6 +224,7 @@ function EnhancedTableToolbar(props) {
       sx={{
         width: "100%",
         p: "0.8rem",
+        border: "none",
         ...(numSelected > 0 && {
           bgcolor: (theme) => theme.palette.primary.lighter,
           color: "primary.main",
