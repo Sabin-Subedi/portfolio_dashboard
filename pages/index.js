@@ -41,16 +41,9 @@ export default function Home() {
       <Typography variant="h4" color="grey.800">
         Hi, Welcome back
       </Typography>
-      <Grid columnSpacing={4} columns={4} container mt={4}>
+      <Grid columnSpacing={4} columns={3} container mt={4}>
         <Grid item xs={1}>
           <DisplayInfoCard subtitle="Total Projects" data="90" icon={Fa500Px} />
-        </Grid>
-        <Grid item xs={1}>
-          <DisplayInfoCard
-            subtitle="Total Skills"
-            data="100"
-            icon={FaAcquisitionsIncorporated}
-          />
         </Grid>
         <Grid item xs={1}>
           <DisplayInfoCard

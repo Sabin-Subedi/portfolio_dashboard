@@ -1,12 +1,12 @@
 import { Avatar, Box, Paper, Typography } from "@mui/material";
 import React from "react";
-import { BsKanban } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { FaFolder, FaUser } from "react-icons/fa";
+import { FiCodesandbox } from "react-icons/fi";
+import { SiXcode } from "react-icons/si";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdSpeed } from "react-icons/md";
-import { VscCalendar } from "react-icons/vsc";
 import Logo from "../../assets/Logo";
 import { useAppContext } from "../../context";
 import { getNameFromEmail } from "../../utils/utils";
@@ -42,6 +42,17 @@ const menus = [
           {
             label: "Cards",
             link: "/user/cards",
+          },
+        ],
+      },
+      {
+        label: "Skills",
+        icon: <SiXcode />,
+        link: "/skills",
+        subMenuItems: [
+          {
+            label: "Lists",
+            link: "/skills/lists",
           },
         ],
       },
