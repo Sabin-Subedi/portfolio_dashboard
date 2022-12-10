@@ -5,6 +5,8 @@ import React, { useEffect } from "react";
 import {
   FiCheckCircle,
   FiEdit,
+  FiGithub,
+  FiLink,
   FiPlus,
   FiTrash2,
   FiXCircle,
@@ -83,8 +85,9 @@ const TableSchema = [
     component: ({ content, index }) =>
       content.map((item) => (
         <Chip
+          size="small"
           key={content.value + index}
-          sx={{ mr: 1 }}
+          sx={{ mr: 1, my: 1, textTransform: "capitalize" }}
           label={item.label}
           variant="outlined"
           color="primary"
@@ -96,7 +99,7 @@ const TableSchema = [
 const TableAction = [
   {
     item: "Delete",
-    component: ({ record }) => (
+    component: () => (
       <Box
         sx={{
           display: "flex",
@@ -113,7 +116,7 @@ const TableAction = [
   {
     item: "Edit",
     link: `/proects/create/:recordId`,
-    component: ({ record }) => (
+    component: () => (
       <Box
         sx={{ display: "flex", gap: 1, alignItems: "center", color: "grey" }}
       >
@@ -121,6 +124,49 @@ const TableAction = [
         <Typography>Edit</Typography>
       </Box>
     ),
+  },
+  {
+    item: "live_project_link",
+    onClick: (record) =>
+      record?.live_project_link &&
+      window.open(record.live_project_link, "_newtab"),
+    component: () => {
+      return (
+        <>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              alignItems: "center",
+              color: "grey",
+            }}
+          >
+            <FiLink />
+            <Typography>Live Project</Typography>
+          </Box>
+        </>
+      );
+    },
+  },
+  {
+    item: "github_link",
+    onClick: (record) =>
+      record?.github_link && window.open(record.github_link, "_newtab"),
+    component: () => {
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1,
+            alignItems: "center",
+            color: "grey",
+          }}
+        >
+          <FiGithub />
+          <Typography>Github</Typography>
+        </Box>
+      );
+    },
   },
 ];
 

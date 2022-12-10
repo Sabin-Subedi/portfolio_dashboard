@@ -70,7 +70,12 @@ function TableAction({ record, actions }) {
       >
         {actions.map((item, index) => {
           const mennuWrapper = (
-            <MenuItem sx={{ borderRadius: "0.4rem" }}>
+            <MenuItem
+              sx={{ borderRadius: "0.4rem" }}
+              {...(item.onClick && {
+                onClick: () => item.onClick(record),
+              })}
+            >
               {item.component ? <item.component record={record} /> : item.item}
             </MenuItem>
           );
