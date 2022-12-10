@@ -22,17 +22,8 @@ import {
   query,
   getDocs,
 } from "firebase/firestore";
+import firebaseConfig from "./config";
 let instance;
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyD2ou941N_XhUShuqKl1lA0Dx6aOkCj0cA",
-  authDomain: "portfoli-project-manager.firebaseapp.com",
-  projectId: "portfoli-project-manager",
-  storageBucket: "portfoli-project-manager.appspot.com",
-  messagingSenderId: "387361252878",
-  appId: "1:387361252878:web:b9ecb9532234ea98ccfe5f",
-};
 
 class Firebase {
   constructor(config) {
