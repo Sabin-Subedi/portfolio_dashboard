@@ -172,7 +172,7 @@ const TableAction = [
 
 function ProjectsPage() {
   const [{ user, projects }, dispatch] = useAppContext();
-  const { fire } = useFirebase({
+  const { fire, loading } = useFirebase({
     firebaseFunc: firebaseFunctions.getDocs,
     onSuccess: (data) => {
       dispatch({
@@ -216,6 +216,7 @@ function ProjectsPage() {
       />
       <Box sx={{ pb: 5 }}>
         <AppTable
+          loading={projects?.length < 1 && loading}
           tableAction={TableAction}
           collection={projects}
           schema={TableSchema}

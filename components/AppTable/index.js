@@ -11,12 +11,19 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import { deepFlatten } from "../../utils/utils";
+import AppTableSkeleton from "./AppTableSkeleton";
 import { StyledTableCell } from "./styledTableComp";
 import TableAction from "./TableAction";
 import AppTableHead from "./TableHead";
+import { v4 as uuidv4 } from "uuid";
 import { genTableHead, getComparator, stableSort } from "./tableHelpers";
 
-export default function AppTable({ schema, collection: rows, tableAction }) {
+export default function AppTable({
+  schema,
+  collection: rows,
+  tableAction,
+  loading = false,
+}) {
   // const tableRows = data;
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -103,69 +110,79 @@ export default function AppTable({ schema, collection: rows, tableAction }) {
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.sort(getComparator(order, orderBy)).slice() */}
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <StyledTableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                        />
-                      </StyledTableCell>
-                      {schema &&
-                        schema.map((element, index) => (
-                          <StyledTableCell
-                            align={element?.align || "left"}
-                            key={element.label + index}
-                            {...(index === 0
-                              ? {
-                                  component: "th",
-                                  id: labelId,
-                                  scope: "row",
-                                }
-                              : {})}
-                          >
-                            {element.component ? (
-                              <element.component
-                                content={deepFlatten(element.key, row)}
-                                record={row}
-                              />
-                            ) : (
-                              deepFlatten(element.key, row)
-                            )}
+              {loading ? (
+                Array.from(Array(rowsPerPage).keys()).map((item) => (
+                  <AppTableSkeleton key={uuidv4()} length={schema.length} />
+                ))
+              ) : (
+                <>
+                  {stableSort(rows, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      const isItemSelected = isSelected(row.id);
+                      const labelId = `enhanced-table-checkbox-${index}`;
+                      return (
+                        <TableRow
+                          hover
+                          onClick={(event) => handleClick(event, row.id)}
+                          role="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={row.id}
+                          selected={isItemSelected}
+                        >
+                          <StyledTableCell padding="checkbox">
+                            <Checkbox
+                              color="primary"
+                              checked={isItemSelected}
+                              inputProps={{
+                                "aria-labelledby": labelId,
+                              }}
+                            />
                           </StyledTableCell>
-                        ))}
-                      {tableAction && (
-                        <StyledTableCell onClick={(e) => e.stopPropagation()}>
-                          <TableAction actions={tableAction} record={row} />
-                        </StyledTableCell>
-                      )}
+                          {schema &&
+                            schema.map((element, index) => (
+                              <StyledTableCell
+                                align={element?.align || "left"}
+                                key={element.label + index}
+                                {...(index === 0
+                                  ? {
+                                      component: "th",
+                                      id: labelId,
+                                      scope: "row",
+                                    }
+                                  : {})}
+                              >
+                                {element.component ? (
+                                  <element.component
+                                    content={deepFlatten(element.key, row)}
+                                    record={row}
+                                  />
+                                ) : (
+                                  deepFlatten(element.key, row)
+                                )}
+                              </StyledTableCell>
+                            ))}
+                          {tableAction && (
+                            <StyledTableCell
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <TableAction actions={tableAction} record={row} />
+                            </StyledTableCell>
+                          )}
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                    <TableRow
+                      style={{
+                        height: (dense ? 33 : 53) * emptyRows,
+                      }}
+                    >
+                      <TableCell colSpan={6} />
                     </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
+                  )}
+                </>
               )}
             </TableBody>
           </Table>
