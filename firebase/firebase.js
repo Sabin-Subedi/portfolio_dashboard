@@ -164,7 +164,11 @@ class Firebase {
             if (!doc) {
               reject("Couldn't Fetch the data");
             }
-            data.push(doc.data());
+
+            data.push({
+              id: doc.id,
+              ...doc.data(),
+            });
           });
           resolve(data);
         })

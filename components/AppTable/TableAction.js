@@ -1,30 +1,40 @@
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import * as React from "react";
+import { Box, IconButton, Menu, MenuItem } from "@mui/material";
+import Link from "next/link";
+import React from "react";
+import { FiMoreVertical } from "react-icons/fi";
 
-export default function DropDown({ tooltip, children }) {
+const LinkWrapper = ({ children, link, recordId }) => {
+  return (
+    <Link href={link.replace(":recordId", recordId)} passHref>
+      {children}
+    </Link>
+  );
+};
+
+function TableAction({ record, actions }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
+    event.stopPropagation();
+
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
-    <React.Fragment>
+    <>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <IconButton
           onClick={handleClick}
-          sx={{ ml: 2 }}
+          size="small"
+          sx={{ color: open ? "primary.main" : "grey.600" }}
           aria-controls={open ? "account-menu" : undefined}
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
         >
-          {children}
+          <FiMoreVertical />
         </IconButton>
       </Box>
       <Menu
@@ -38,14 +48,15 @@ export default function DropDown({ tooltip, children }) {
           sx: {
             overflow: "visible",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.1))",
-            mt: 1,
-            borderRadius: "8px",
+            borderRadius: "0.5rem",
+            minWidth: "10rem",
+            padding: "0.5rem",
             "&:before": {
               content: '""',
               display: "block",
               position: "absolute",
-              top: 0,
-              right: 14,
+              top: 15,
+              right: -5,
               width: 10,
               height: 10,
               bgcolor: "background.paper",
@@ -55,15 +66,26 @@ export default function DropDown({ tooltip, children }) {
           },
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        anchorOrigin={{ horizontal: "top", vertical: "top" }}
       >
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> My account
-        </MenuItem>
+        {actions.map((item, index) => {
+          const mennuWrapper = (
+            <MenuItem sx={{ borderRadius: "0.4rem" }}>
+              {item.component ? <item.component record={record} /> : item.item}
+            </MenuItem>
+          );
+
+          return item?.link ? (
+            <LinkWrapper link={item.link} recordId={record.id}>
+              {mennuWrapper}
+            </LinkWrapper>
+          ) : (
+            mennuWrapper
+          );
+        })}
       </Menu>
-    </React.Fragment>
+    </>
   );
 }
+
+export default TableAction;

@@ -1,8 +1,6 @@
-import { Box, Button, Grid, Paper, Typography } from "@mui/material";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 
-import Head from "next/head";
 import { Fa500Px, FaAcquisitionsIncorporated } from "react-icons/fa";
-import DropDown from "../components/Dropdown.js";
 import { useAppContext } from "../context/index.js";
 
 function DisplayInfoCard({ subtitle, data, icon: Icon }) {
