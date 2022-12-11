@@ -115,7 +115,7 @@ const TableAction = [
   },
   {
     item: "Edit",
-    link: `/proects/create/:recordId`,
+    link: `/projects/create/?project_id=:recordId`,
     component: () => (
       <Box
         sx={{ display: "flex", gap: 1, alignItems: "center", color: "grey" }}

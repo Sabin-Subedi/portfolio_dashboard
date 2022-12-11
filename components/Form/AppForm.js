@@ -1,7 +1,13 @@
-import { Formik } from "formik";
+import { Form, Formik } from "formik";
 import React from "react";
 
-function AppForm({ children, initialValues, validationSchema, onSubmit }) {
+function AppForm({
+  children,
+  initialValues,
+  validationSchema,
+  onSubmit,
+  disabled,
+}) {
   return (
     <Formik
       initialValues={initialValues}
@@ -9,7 +15,7 @@ function AppForm({ children, initialValues, validationSchema, onSubmit }) {
       onSubmit={onSubmit}
       enableReinitialize
     >
-      {({ handleSubmit }) => <form onSubmit={handleSubmit}>{children}</form>}
+      {({ handleSubmit }) => <Form onSubmit={handleSubmit}>{children}</Form>}
     </Formik>
   );
 }

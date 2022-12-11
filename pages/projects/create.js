@@ -55,6 +55,7 @@ function ProjectCreatePage() {
     firebaseFunc: firebase.addDocument,
     toastError: true,
   });
+
   return (
     <>
       <PageHeader
@@ -72,6 +73,7 @@ function ProjectCreatePage() {
       />
 
       <AppForm
+        disabled
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm, setSubmitting }) => {
