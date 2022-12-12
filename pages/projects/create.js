@@ -1,5 +1,5 @@
 import { Grid, Paper } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import * as yup from "yup";
 import AppForm from "../../components/Form/AppForm";
 import AppInputField from "../../components/Form/AppInputField";
@@ -15,6 +15,7 @@ import PageHeader from "../../components/PageHeader";
 import { useAppContext } from "../../context";
 import { firebase } from "../../firebase/firebase";
 import useFirebase from "../../hooks/useFirebase";
+import { useLayoutEffect } from "react";
 
 const initialValues = {
   title: "",
@@ -49,12 +50,24 @@ const validationSchema = yup.object().shape({
 });
 
 function ProjectCreatePage() {
-  const [{ user }] = useAppContext();
   const router = useRouter();
+  const projectId = router.query.project_id;
+  const [formInitialValues, setFormInitialValues] = useState(initialValues);
+  const [{ user, projects }] = useAppContext();
   const { loading, fire } = useFirebase({
     firebaseFunc: firebase.addDocument,
     toastError: true,
   });
+
+  useLayoutEffect(() => {
+    if (projects && projectId) {
+      console.log(projectId, projects);
+      const project = projects.find((project) => project.id === projectId);
+      if (project) {
+        setFormInitialValues(project);
+      }
+    }
+  }, [projects, projectId]);
 
   return (
     <>
@@ -74,7 +87,7 @@ function ProjectCreatePage() {
 
       <AppForm
         disabled
-        initialValues={initialValues}
+        initialValues={formInitialValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm, setSubmitting }) => {
           try {

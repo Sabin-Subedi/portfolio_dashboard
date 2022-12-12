@@ -52,6 +52,7 @@ function AppQuillField({
         onChange={(value) => {
           setFieldValue(name, value);
         }}
+        initialValue={values[name]}
         onBlur={() => setFieldTouched(name, true)}
         error={touched[name] && errors[name]}
       />

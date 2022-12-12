@@ -58,6 +58,11 @@ class Editor extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidMount() {
+    this.props.initialValue &&
+      this.setState({ editorHtml: this.props.initialValue });
+  }
+
   handleChange(html) {
     this.setState({ editorHtml: html });
     this.props.onChange && this.props.onChange(html);
