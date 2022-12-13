@@ -73,15 +73,6 @@ function ProjectCreatePage() {
   const { fire: updateFire } = useFirebase({
     firebaseFunc: firebaseFunctions.updateDoc,
     toastError: true,
-    onSuccess: (doc) => {
-      dispatch({
-        type: UPDATE_PROJECT,
-        payload: {
-          id: doc.id,
-          data: doc.data(),
-        },
-      });
-    },
   });
 
   // fetch the project detail if projectId is available
