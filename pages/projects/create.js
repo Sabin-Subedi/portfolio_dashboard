@@ -17,6 +17,7 @@ import { firebase } from "../../firebase/firebase";
 import useFirebase from "../../hooks/useFirebase";
 import { useLayoutEffect } from "react";
 import firebaseFunctions from "../../constants/firebaseFunctions";
+import { ADD_PROJECT } from "../../context/actions";
 
 const initialValues = {
   title: "",
@@ -54,19 +55,28 @@ function ProjectCreatePage() {
   const router = useRouter();
   const projectId = router.query.project_id;
   const [formInitialValues, setFormInitialValues] = useState(initialValues);
-  const [{ user, projects }] = useAppContext();
+  const [{ user, projects }, dispatch] = useAppContext();
   const { loading, fire } = useFirebase({
     firebaseFunc: firebase.addDocument,
     toastError: true,
   });
   const { loading: loadingProjects, fire: fireProjects } = useFirebase({
     firebaseFunc: firebaseFunctions.getDoc,
-    fireValues: firebaseFunctions.getDocRef(
-      "projects",
-      user?.uid,
-      "project_list",
-      projectId
-    ),
+    fireValues: {
+      documentRef: firebaseFunctions.getDocRef(
+        "projects",
+        user?.uid,
+        "project_list",
+        projectId
+      ),
+    },
+    autoFire: true,
+    onSuccess: (data) => {
+      dispatch({
+        type: ADD_PROJECT,
+        payload: data,
+      });
+    },
   });
 
   useLayoutEffect(() => {

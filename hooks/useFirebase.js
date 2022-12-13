@@ -44,7 +44,7 @@ function useFirebase({
 
   useEffect(() => {
     if (autoFire) {
-      fire(...fireValues);
+      fire(fireValues);
     }
   }, [autoFire, fire, fireValues]);
 
