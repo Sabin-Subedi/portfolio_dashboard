@@ -17,7 +17,7 @@ import { firebase } from "../../firebase/firebase";
 import useFirebase from "../../hooks/useFirebase";
 import { useLayoutEffect } from "react";
 import firebaseFunctions from "../../constants/firebaseFunctions";
-import { ADD_PROJECT } from "../../context/actions";
+import { ADD_PROJECT, UPDATE_PROJECT } from "../../context/actions";
 
 const initialValues = {
   title: "",
@@ -68,6 +68,20 @@ function ProjectCreatePage() {
   const { fire } = useFirebase({
     firebaseFunc: firebase.addDocument,
     toastError: true,
+  });
+
+  const { fire: updateFire } = useFirebase({
+    firebaseFunc: firebaseFunctions.updateDoc,
+    toastError: true,
+    onSuccess: (doc) => {
+      dispatch({
+        type: UPDATE_PROJECT,
+        payload: {
+          id: doc.id,
+          data: doc.data(),
+        },
+      });
+    },
   });
 
   // fetch the project detail if projectId is available
@@ -122,10 +136,17 @@ function ProjectCreatePage() {
               throw new Error("User not logged in.");
             }
             const { uid } = user;
-            await fire({
-              collectionName: `projects/${uid}/project_list`,
-              data: values,
-            });
+            if (projectId) {
+              await updateFire({
+                documentRef,
+                data: values,
+              });
+            } else {
+              await fire({
+                collectionName: `projects/${uid}/project_list`,
+                data: values,
+              });
+            }
             toast.success("Post Created Successfully.");
             router.push("/projects/lists");
           } catch (err) {

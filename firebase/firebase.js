@@ -22,6 +22,7 @@ import {
   query,
   getDocs,
   getDoc,
+  updateDoc,
 } from "firebase/firestore";
 import firebaseConfig from "./config";
 let instance;
@@ -143,10 +144,10 @@ class Firebase {
     return addDoc(collectionRef, data);
   };
 
-  upadteDocument = ({ documentRef, data }) => {
+  updateDocument = ({ documentRef, data }) => {
     if (!documentRef) throw new Error("No document reference provided");
     data.lastUpdatedAt = Timestamp.now();
-    return setDoc(documentRef, data);
+    return updateDoc(documentRef, data);
   };
 
   getDocuments = ({ collectionRef, query = [] }) => {

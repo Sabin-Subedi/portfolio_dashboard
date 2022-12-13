@@ -6,6 +6,7 @@ const firebaseFunctions = Object.freeze({
   getCollectionRef: firebase.getCollection,
   getDocRef: firebase.getDocRef,
   getDoc: firebase.getDocument,
+  updateDoc: firebase.updateDocument,
 });
 
 export default firebaseFunctions;
