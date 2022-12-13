@@ -16,6 +16,7 @@ import { useAppContext } from "../../context";
 import { firebase } from "../../firebase/firebase";
 import useFirebase from "../../hooks/useFirebase";
 import { useLayoutEffect } from "react";
+import firebaseFunctions from "../../constants/firebaseFunctions";
 
 const initialValues = {
   title: "",
@@ -57,6 +58,15 @@ function ProjectCreatePage() {
   const { loading, fire } = useFirebase({
     firebaseFunc: firebase.addDocument,
     toastError: true,
+  });
+  const { loading: loadingProjects, fire: fireProjects } = useFirebase({
+    firebaseFunc: firebaseFunctions.getDoc,
+    fireValues: firebaseFunctions.getDocRef(
+      "projects",
+      user?.uid,
+      "project_list",
+      projectId
+    ),
   });
 
   useLayoutEffect(() => {

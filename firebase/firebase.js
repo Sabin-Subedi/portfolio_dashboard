@@ -142,7 +142,7 @@ class Firebase {
     return addDoc(collectionRef, data);
   };
 
-  getDocument = ({ collectionRef, query = [] }) => {
+  getDocuments = ({ collectionRef, query = [] }) => {
     let q;
     if (query.length > 0 && collectionRef) {
       q = query(collectionRef, ...query);
@@ -169,12 +169,30 @@ class Firebase {
     });
   };
 
+  getDocument = ({ documentRef }) => {
+    return new Promise((resolve, reject) => {
+      getDoc(documentRef)
+        .then((doc) => {
+          if (!doc) {
+            reject("Couldn't Fetch the data");
+          }
+          resolve({
+            id: doc.id,
+            ...doc.data(),
+          });
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  };
+
   getCollection = (collectionName) => {
     return collection(this.fireStoreDB, collectionName);
   };
 
-  getDocRef = (collectionName, docName) => {
-    return doc(this.fireStoreDB, collectionName, docName);
+  getDocRef = (collectionName, docName, ...props) => {
+    return doc(this.fireStoreDB, collectionName, docName, ...props);
   };
 }
 

@@ -2,3 +2,6 @@ export const LOGIN_USER = "LOGIN_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 
 export const GET_PROJECTS = "RETRIEVE_PROJECTS";
+export const ADD_PROJECT = "ADD_PROJECT";
+export const DELETE_PROJECT = "DELETE_PROJECT";
+export const UPDATE_PROJECT = "UPDATE_PROJECT";
