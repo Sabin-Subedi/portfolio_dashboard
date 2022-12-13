@@ -181,6 +181,7 @@ function ProjectsPage() {
       });
     },
   });
+  console.log(projects);
 
   useEffect(() => {
     if (user && user.uid) {

@@ -25,6 +25,14 @@ export const deepFlatten = (string, data) => {
   }, data);
 };
 
+export const getValuesFromKey = (keys, Obj) => {
+  const newObj = {};
+  keys.forEach((key) => {
+    newObj[key] = Obj[key];
+  });
+  return newObj;
+};
+
 export const formatFirebaseDate = (ms) => {
   return format(new Date(ms.toMillis()), "do LLL yyyy");
 };

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Box, Stack, Typography } from "@mui/material";
 import Image from "next/image";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FiX } from "react-icons/fi";
 import { v4 as uuidv4 } from "uuid";
@@ -30,6 +30,7 @@ function Dropzone({
   handleBlur,
   handleFile,
   error = false,
+  fileValues,
 }) {
   const [files, setFiles] = useState([]);
 
@@ -104,12 +105,14 @@ function Dropzone({
             },
             onUpload: (url) => {
               const nFile = file;
+              console.log(file);
               nFile.imageUrl = url;
               setFiles((prev) => [
                 ...prev.filter((f) => f.key !== file.key),
                 nFile,
               ]);
-              handleFile && handleFile(url, FILE_UPLOAD_OPERATION["add_file"]);
+              handleFile &&
+                handleFile(nFile, FILE_UPLOAD_OPERATION["add_file"]);
             },
           });
         } catch (err) {
@@ -122,6 +125,15 @@ function Dropzone({
     [maxFiles, fileSize, uploadFolder, handleFile, handleBlur]
   );
 
+  useEffect(() => {
+    if (files.length === 0 && rejectedFiles.length === 0 && fileValues) {
+      console.log(fileValues);
+      if (typeof fileValues === "string") {
+        setFiles([{ imageUrl: fileValues, key: uuidv4() }]);
+      }
+    }
+  }, [fileValues]);
+
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles,
     multiple: maxFiles > 1,
@@ -133,8 +145,8 @@ function Dropzone({
 
   const removeFileFromFirebase = useCallback(
     (file) => {
-      handleFile &&
-        handleFile(file.imageUrl, FILE_UPLOAD_OPERATION["remove_file"]);
+      handleFile && handleFile(file, FILE_UPLOAD_OPERATION["remove_file"]);
+
       firebase.deleteFile(file);
     },
     [handleFile]

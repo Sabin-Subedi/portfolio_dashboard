@@ -10,6 +10,7 @@ import { useFormikContext } from "formik";
 import dynamic from "next/dynamic";
 import React from "react";
 import { FILE_UPLOAD_OPERATION } from "../../constants/FileUploadConstants";
+import { getValuesFromKey } from "../../utils/utils";
 import Dropzone from "../DropZone";
 import Editor from "../Editor";
 
@@ -57,25 +58,32 @@ function AppFileDropField({
       )}
       <Dropzone
         handleBlur={() => setFieldTouched(name)}
-        handleFile={(fileUrl, operation) => {
+        handleFile={(uploadedFile, operation) => {
           if (!operation) throw new Error("Operation is required");
           if (!FILE_UPLOAD_OPERATION[operation])
             throw new Error("Invalid Operation");
+          console.log("uploadedFile", uploadedFile);
+          const file = getValuesFromKey(
+            ["key", "imageUrl", "name"],
+            uploadedFile
+          );
 
           if (operation === FILE_UPLOAD_OPERATION["add_file"]) {
             setFieldValue(
               name,
               Array.isArray(values[name])
-                ? [...values[name], fileUrl]
+                ? values[name]
+                    .filter((item) => item.key !== file.key)
+                    .concat(file)
                 : maxFiles > 1
-                ? [fileUrl]
-                : fileUrl
+                ? [file]
+                : file
             );
           } else if (operation === FILE_UPLOAD_OPERATION["remove_file"]) {
             setFieldValue(
               name,
               Array.isArray(values[name])
-                ? values[name].filter((file) => file !== fileUrl)
+                ? values[name].filter((item) => item.key !== file.key)
                 : maxFiles > 1
                 ? []
                 : ""
