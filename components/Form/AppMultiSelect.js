@@ -74,7 +74,7 @@ export default function AppMutltiSelectField({
         renderTags={(value, getTagProps) => {
           return value.map((option, index) => (
             <Chip
-              key={option}
+              key={option + index}
               label={option.label}
               size="small"
               sx={{

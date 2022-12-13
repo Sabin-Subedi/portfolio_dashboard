@@ -21,6 +21,7 @@ import {
   Timestamp,
   query,
   getDocs,
+  getDoc,
 } from "firebase/firestore";
 import firebaseConfig from "./config";
 let instance;

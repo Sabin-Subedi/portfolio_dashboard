@@ -25,11 +25,12 @@ function useFirebase({
       try {
         const response = await firebaseFunc(...values);
         setData(response);
+        console.log(response);
         onSuccess && onSuccess(response);
         setSuccess(true);
       } catch (error) {
         const errorMessage = customErrorMessage || error.message;
-
+        console.log(error);
         toastError && toast.error(errorMessage);
         onFailure && onFailure(error);
         setError({ code: error.code, message: errorMessage });
@@ -42,11 +43,12 @@ function useFirebase({
     [firebaseFunc, toastError, customErrorMessage, onSuccess, onDone, onFailure]
   );
 
+  // console.log("autoFire", fireValues);
   useEffect(() => {
     if (autoFire) {
       fire(fireValues);
     }
-  }, [autoFire, fire, fireValues]);
+  }, [autoFire]);
 
   return { loading, error, data, fire, success };
 }
