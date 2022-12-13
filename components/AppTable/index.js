@@ -17,6 +17,7 @@ import TableAction from "./TableAction";
 import AppTableHead from "./TableHead";
 import { v4 as uuidv4 } from "uuid";
 import { genTableHead, getComparator, stableSort } from "./tableHelpers";
+import Image from "next/image";
 
 export default function AppTable({
   schema,
@@ -114,6 +115,36 @@ export default function AppTable({
                 Array.from(Array(rowsPerPage).keys()).map((item) => (
                   <AppTableSkeleton key={uuidv4()} length={schema.length} />
                 ))
+              ) : rows?.length < 1 ? (
+                <TableRow
+                  // colSpan={schema.length}
+                  sx={{
+                    minHeight: "25rem",
+
+                    width: "100%",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      mx: "auto",
+                    }}
+                  >
+                    <Box
+                      mr={5}
+                      sx={{
+                        position: "relative",
+                        minWidth: "14rem",
+                        minHeight: "12rem",
+                      }}
+                    >
+                      <Image
+                        src="/empty_content.svg"
+                        layout="fill"
+                        alt="File Upload"
+                      />
+                    </Box>
+                  </Box>
+                </TableRow>
               ) : (
                 <>
                   {stableSort(rows, getComparator(order, orderBy))
