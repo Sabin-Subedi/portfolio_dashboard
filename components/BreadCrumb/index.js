@@ -43,6 +43,7 @@ function BreadCrumb({ breadcrumbs, ...props }) {
       {breadcrumbs.map((item, index) => {
         const breadText = (
           <Typography
+            key={item?.label + index}
             variant="body2"
             sx={{
               fontWeight: "400",

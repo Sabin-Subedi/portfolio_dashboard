@@ -54,18 +54,19 @@ const color = [
 class Editor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editorHtml: "", theme: "snow" };
+    this.state = { editorHtml: props.initialValue || "", theme: "snow" };
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    this.props.initialValue &&
-      this.setState({ editorHtml: this.props.initialValue });
+    // this.props.initialValue &&
+    //   this.setState({ editorHtml: this.props.initialValue });
   }
 
   handleChange(html) {
-    this.setState({ editorHtml: html });
-    this.props.onChange && this.props.onChange(html);
+    this.props.onChange
+      ? this.props.onChange(html)
+      : this.setState({ editorHtml: html });
   }
 
   handleThemeChange(newTheme) {
@@ -74,14 +75,14 @@ class Editor extends React.Component {
   }
 
   render() {
-    const { error } = this.props;
+    const { error, value } = this.props;
     return (
       <div>
         <ReactQuill
           className={error && "ql-error"}
           theme={this.state.theme}
           onChange={this.handleChange}
-          value={this.state.editorHtml}
+          value={value || this.state.editorHtml}
           modules={Editor.modules}
           formats={Editor.formats}
           bounds={".app"}

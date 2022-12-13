@@ -143,6 +143,12 @@ class Firebase {
     return addDoc(collectionRef, data);
   };
 
+  upadteDocument = ({ documentRef, data }) => {
+    if (!documentRef) throw new Error("No document reference provided");
+    data.lastUpdatedAt = Timestamp.now();
+    return setDoc(documentRef, data);
+  };
+
   getDocuments = ({ collectionRef, query = [] }) => {
     let q;
     if (query.length > 0 && collectionRef) {

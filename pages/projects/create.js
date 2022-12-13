@@ -52,23 +52,29 @@ const validationSchema = yup.object().shape({
 });
 
 function ProjectCreatePage() {
+  const [{ user, projects }, dispatch] = useAppContext();
   const router = useRouter();
   const projectId = router.query.project_id;
+  const documentRef =
+    projectId &&
+    firebaseFunctions.getDocRef(
+      "projects",
+      user?.uid,
+      "project_list",
+      projectId
+    );
   const [formInitialValues, setFormInitialValues] = useState(initialValues);
-  const [{ user, projects }, dispatch] = useAppContext();
-  const { loading, fire } = useFirebase({
+
+  const { fire } = useFirebase({
     firebaseFunc: firebase.addDocument,
     toastError: true,
   });
-  const { loading: loadingProjects, fire: fireProjects } = useFirebase({
+
+  // fetch the project detail if projectId is available
+  useFirebase({
     firebaseFunc: firebaseFunctions.getDoc,
     fireValues: {
-      documentRef: firebaseFunctions.getDocRef(
-        "projects",
-        user?.uid,
-        "project_list",
-        projectId
-      ),
+      documentRef,
     },
     autoFire: true,
     onSuccess: (data) => {
