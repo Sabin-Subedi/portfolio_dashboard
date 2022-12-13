@@ -37,23 +37,25 @@ const TableSchema = [
     key: "title",
     component: ({ content, record }) => (
       <Box component="span" sx={{ display: "flex", alignItems: "center" }}>
-        <Box
-          sx={{
-            width: "5rem",
-            height: "3.5rem",
-            overflow: "hidden",
-            mr: 2,
-            borderRadius: "0.5rem",
-            position: "relative",
-          }}
-        >
-          <Image
-            src={record.project_image}
-            layout="fill"
-            objectFit="cover"
-            alt={record.title}
-          />
-        </Box>
+        {record?.project_image && (
+          <Box
+            sx={{
+              width: "5rem",
+              height: "3.5rem",
+              overflow: "hidden",
+              mr: 2,
+              borderRadius: "0.5rem",
+              position: "relative",
+            }}
+          >
+            <Image
+              src={record?.project_image?.imageUrl}
+              layout="fill"
+              objectFit="cover"
+              alt={record.title}
+            />
+          </Box>
+        )}
         {content}
       </Box>
     ),

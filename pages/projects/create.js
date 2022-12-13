@@ -46,7 +46,7 @@ const validationSchema = yup.object().shape({
     .min(2, "Must have at least 2 tools.")
     .required()
     .label("Tools"),
-  project_image: yup.string().required().label("Project Image"),
+  project_image: yup.object().required().label("Project Image"),
 });
 
 function ProjectCreatePage() {

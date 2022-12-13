@@ -105,7 +105,7 @@ function Dropzone({
             },
             onUpload: (url) => {
               const nFile = file;
-              console.log(file);
+
               nFile.imageUrl = url;
               setFiles((prev) => [
                 ...prev.filter((f) => f.key !== file.key),
@@ -127,10 +127,7 @@ function Dropzone({
 
   useEffect(() => {
     if (files.length === 0 && rejectedFiles.length === 0 && fileValues) {
-      console.log(fileValues);
-      if (typeof fileValues === "string") {
-        setFiles([{ imageUrl: fileValues, key: uuidv4() }]);
-      }
+      setFiles((prev) => [...prev, fileValues]);
     }
   }, [fileValues]);
 

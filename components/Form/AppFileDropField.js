@@ -62,7 +62,7 @@ function AppFileDropField({
           if (!operation) throw new Error("Operation is required");
           if (!FILE_UPLOAD_OPERATION[operation])
             throw new Error("Invalid Operation");
-          console.log("uploadedFile", uploadedFile);
+
           const file = getValuesFromKey(
             ["key", "imageUrl", "name"],
             uploadedFile
