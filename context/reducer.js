@@ -10,13 +10,16 @@ import {
   UPDATE_PROJECT,
   UPDATE_SKILL,
 } from "./actions";
+import { getNameFromEmail } from "../utils/utils";
 
 const reducer = (state, action) => {
   switch (action.type) {
     case LOGIN_USER:
+      const displayName =
+        action.payload.displayName || getNameFromEmail(action.payload.email);
       return {
         ...state,
-        user: action.payload,
+        user: { ...action.payload, displayName },
         isLoggedIn: true,
       };
 

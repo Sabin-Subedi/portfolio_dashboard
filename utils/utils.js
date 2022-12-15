@@ -1,7 +1,8 @@
 import { format } from "date-fns";
 
 export const getNameFromEmail = (email) => {
-  return email ? email.split("@")[0] : email;
+  const name = email?.includes("@") ? email.split("@")[0] : email;
+  return name.charAt(0).toUpperCase() + name.slice(1);
 };
 export const debounce = (func, wait, immediate) => {
   let timeout;
