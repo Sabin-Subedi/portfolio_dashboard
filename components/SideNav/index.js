@@ -54,6 +54,10 @@ const menus = [
             label: "Lists",
             link: "/skills/lists",
           },
+          {
+            label: "Create",
+            link: "/skills/create",
+          },
         ],
       },
       {

@@ -86,16 +86,18 @@ const TableSchema = [
     label: "Technologies",
     key: "tools",
     component: ({ content, index }) =>
-      content.map((item) => (
-        <Chip
-          size="small"
-          key={content.value + index}
-          sx={{ mr: 1, my: 1, textTransform: "capitalize" }}
-          label={item.label}
-          variant="outlined"
-          color="primary"
-        />
-      )),
+      content
+        ? content.map((item) => (
+            <Chip
+              size="small"
+              key={content.value + index}
+              sx={{ mr: 1, my: 1, textTransform: "capitalize" }}
+              label={item.label}
+              variant="outlined"
+              color="primary"
+            />
+          ))
+        : null,
   },
 ];
 

@@ -1,10 +1,14 @@
 import {
   ADD_PROJECT,
+  ADD_SKILL,
   DELETE_PROJECT,
+  DELETE_SKILL,
   GET_PROJECTS,
+  GET_SKILLS,
   LOGIN_USER,
   LOGOUT_USER,
   UPDATE_PROJECT,
+  UPDATE_SKILL,
 } from "./actions";
 
 const reducer = (state, action) => {
@@ -43,6 +47,28 @@ const reducer = (state, action) => {
       return {
         ...state,
         projects: state.projects.map((item) =>
+          item.id === action.payload.id ? action.payload : item
+        ),
+      };
+    case GET_SKILLS:
+      return {
+        ...state,
+        skills: action.payload,
+      };
+    case ADD_SKILL:
+      return {
+        ...state,
+        skills: [...state.skills, action.payload],
+      };
+    case DELETE_SKILL:
+      return {
+        ...state,
+        skills: state.skills.filter((item) => item.id !== action.payload.id),
+      };
+    case UPDATE_SKILL:
+      return {
+        ...state,
+        skills: state.skills.map((item) =>
           item.id === action.payload.id ? action.payload : item
         ),
       };

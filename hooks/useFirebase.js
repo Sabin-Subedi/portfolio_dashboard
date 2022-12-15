@@ -30,7 +30,7 @@ function useFirebase({
         setSuccess(true);
       } catch (error) {
         const errorMessage = customErrorMessage || error.message;
-        console.log(error);
+
         toastError && toast.error(errorMessage);
         onFailure && onFailure(error);
         setError({ code: error.code, message: errorMessage });
