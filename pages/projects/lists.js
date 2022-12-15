@@ -1,5 +1,4 @@
 import { Box, Button, Chip, Typography } from "@mui/material";
-import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import {
@@ -11,6 +10,7 @@ import {
   FiTrash2,
   FiXCircle,
 } from "react-icons/fi";
+import AppImage from "../../components/AppImage";
 import AppTable from "../../components/AppTable";
 import PageHeader from "../../components/PageHeader";
 import firebaseFunctions from "../../constants/firebaseFunctions";
@@ -44,11 +44,12 @@ const TableSchema = [
               height: "3.5rem",
               overflow: "hidden",
               mr: 2,
+              backgroundColor: "grey.200",
               borderRadius: "0.5rem",
               position: "relative",
             }}
           >
-            <Image
+            <AppImage
               src={record?.project_image?.imageUrl}
               layout="fill"
               objectFit="cover"
