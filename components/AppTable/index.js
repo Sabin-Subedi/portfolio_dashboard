@@ -191,7 +191,7 @@ export default function AppTable({
                                     record={row}
                                   />
                                 ) : (
-                                  deepFlatten(element.key, row)
+                                  deepFlatten(element.key, row) || "-"
                                 )}
                               </StyledTableCell>
                             ))}

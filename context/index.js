@@ -5,6 +5,7 @@ const store = {
   user: null,
   isLoggedIn: null,
   projects: [],
+  skills: [],
 };
 
 export const AppContext = createContext();
