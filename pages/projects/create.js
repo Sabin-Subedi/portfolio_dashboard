@@ -52,7 +52,7 @@ const validationSchema = yup.object().shape({
 });
 
 function ProjectCreatePage() {
-  const [{ user, projects }, dispatch] = useAppContext();
+  const [{ user, projects, skills }, dispatch] = useAppContext();
   const router = useRouter();
   const projectId = router.query.project_id;
   const documentRef =
@@ -195,7 +195,16 @@ function ProjectCreatePage() {
                 sx={{ marginTop: "1rem" }}
                 name="tools"
                 label="Tools"
-                options={[{ label: "React", value: "react" }]}
+                options={
+                  skills
+                    ? skills.map((skill) => {
+                        return {
+                          label: skill.title,
+                          value: skill.id,
+                        };
+                      })
+                    : []
+                }
               />
             </Paper>
             <AppFormButton
