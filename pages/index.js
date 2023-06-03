@@ -77,15 +77,15 @@ export default function Home() {
   });
 
   useEffect(() => {
-    if (user && skills.length === 0) {
+    if (user) {
       fireSkills({
         collectionRef: firebaseFunctions.getCollectionRef("skills"),
       });
     }
-  }, [user, skills]);
+  }, [user]);
 
   useEffect(() => {
-    if (user && projects.length === 0) {
+    if (user) {
       console.log("hello");
       fireProjects({
         collectionRef: firebaseFunctions.getCollectionRef(
@@ -93,12 +93,12 @@ export default function Home() {
         ),
       });
     }
-  }, [user, projects]);
+  }, [user]);
 
   return (
     <>
       <Typography variant="h4" color="grey.800">
-        Hi, Welcome back {user.displayName}
+        Hi, Welcome back {user?.displayName}
       </Typography>
       <Grid columnSpacing={4} columns={3} container mt={4}>
         <Grid item xs={1}>
