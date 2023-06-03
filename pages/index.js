@@ -79,14 +79,15 @@ export default function Home() {
   useEffect(() => {
     if (user) {
       fireSkills({
-        collectionRef: firebaseFunctions.getCollectionRef("skills"),
+        collectionRef: firebaseFunctions.getCollectionRef(
+          `skills/${user.uid}/skill_list/`
+        ),
       });
     }
   }, [user]);
 
   useEffect(() => {
     if (user) {
-      console.log("hello");
       fireProjects({
         collectionRef: firebaseFunctions.getCollectionRef(
           `projects/${user.uid}/project_list/`

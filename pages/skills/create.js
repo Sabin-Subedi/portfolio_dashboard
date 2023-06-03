@@ -114,7 +114,7 @@ function SkillCreatePage() {
               });
             } else {
               const response = await fire({
-                collectionName: "skills",
+                collectionName: `skills/${user.uid}/skill_list/`,
                 data: values,
               });
             }
